@@ -2,27 +2,48 @@ package model;
 
 public class Recipe {
     private String recipeName; //name of the recipe
-    private String category;   //food category of the recipe e.g. pasta, soup, rice
-    private String diettype;   //food belonging to a type of diet e.g. vegetarian, vegan, halal, etc.
+    private String category;   //category of the recipe e.g. vegetarian, vegan, seafood
+    private String ingredients;//the ingredients needed for the recipe
+    private String steps;      //the steps for the recipe
     private int id;            //recipe id
 
-    public Recipe(String name, String cat, String diet, int id) {
+    // EFFECTS: recipe with a name, category, ingredients, steps, and an id
+    public Recipe(String name, String category, String ingredients, String steps, int id) {
         recipeName = name;
-        category = cat;
-        diettype = diet;
+        this.category = category;
+        this.ingredients = ingredients;
+        this.steps = steps;
         this.id = id;
     }
 
+    // MODIFIES: this
+    // EFFECTS: changes the name of the recipe
     public String changeRecipeName(String name) {
         return recipeName = name;
     }
 
-    public String changeCategory(String cat) {
-        return category = cat;
+    // MODIFIES: this
+    // EFFECTS: changes the category of the recipe
+    public String changeCategory(String category) {
+        return this.category = category;
     }
 
-    public String changeDietType(String diet) {
-        return diettype = diet;
+    // MODIFIES: this
+    // EFFECTS: changes the ingredients of the recipe
+    public String changeIngredients(String ingredients) {
+        return this.ingredients = ingredients;
+    }
+
+    // MODIFIES: this
+    // EFFECTS: changes the steps of the recipe
+    public String changeSteps(String steps) {
+        return this.steps = steps;
+    }
+
+    // MODIFIES: this
+    // EFFECTS: changes the id of the recipe
+    public int changeId(Integer id) {
+        return this.id = id;
     }
 
     public String getRecipeName() {
@@ -33,8 +54,12 @@ public class Recipe {
         return category;
     }
 
-    public String getDietType() {
-        return diettype;
+    public String getIngredients() {
+        return ingredients;
+    }
+
+    public String getSteps() {
+        return steps;
     }
 
     public int getId() {

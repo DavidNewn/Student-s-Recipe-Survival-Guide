@@ -11,9 +11,9 @@ public class RecipeApp {
     }
 
     // MODIFIES: this
-    // EFFECTS: process
+    // EFFECTS: process inputs from user
     private void runRecipeApp() {
-
+        //stub;
     }
 
     // MODIFIES: this
@@ -29,6 +29,7 @@ public class RecipeApp {
     }
 
     //!!! Display command menu and prompts
+    //!!! while loop to operate and read user inputs
     //!!! Provide option to rename parts of a recipe, add a new one, etc.
     //!!! Print out recipe
 
