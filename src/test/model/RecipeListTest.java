@@ -29,13 +29,13 @@ public class RecipeListTest {
     }
 
     @Test
-    public void addOneRecipeToList() {
+    public void testAddOneRecipeToList() {
         recipeListTest.addRecipe(testRecipe1);
         assertEquals(1, recipeListTest.size());
     }
 
     @Test
-    public void removeOneRecipeFromList() {
+    public void testRemoveOneRecipeFromList() {
         recipeListTest.addRecipe(testRecipe3);
         recipeListTest.addRecipe(testRecipe2);
         recipeListTest.addRecipe(testRecipe2);
@@ -46,15 +46,30 @@ public class RecipeListTest {
     }
 
     @Test
-    public void searchForRecipeInList() {
+    public void testSearchForRecipeInList() {
         recipeListTest.addRecipe(testRecipe1); // "Pasta Primavera"
         recipeListTest.addRecipe(testRecipe2); // "Minestrone Soup"
         recipeListTest.addRecipe(testRecipe3); // "Smoked Paprika Curry Sauce"
         assertEquals(3, recipeListTest.size());
 
-        Recipe found = recipeListTest.searchRecipe("Smoked Paprika Curry Sauce");
+        Recipe found = recipeListTest.searchRecipe("Smoked Paprika Curry Sauce"); // normal
         Recipe found2 = recipeListTest.searchRecipe("minesTRone SOUP"); // testing ignore case
+        Recipe notfound = recipeListTest.searchRecipe("notintherecipe"); // fail case
         assertEquals("Smoked Paprika Curry Sauce", found.getRecipeName());
         assertEquals("Minestrone Soup", found2.getRecipeName());
+        assertEquals(null, notfound);
+    }
+
+    @Test
+    public void testAtIndexInList () {
+        recipeListTest.addRecipe(testRecipe1); // "Pasta Primavera"
+        recipeListTest.addRecipe(testRecipe2); // "Minestrone Soup"
+        assertEquals(2, recipeListTest.size());
+
+        Recipe recipe1 = recipeListTest.atIndex(0);
+        Recipe recipe2 = recipeListTest.atIndex(1);
+
+        assertEquals("Pasta Primavera", recipe1.getRecipeName());
+        assertEquals("Minestrone Soup", recipe2.getRecipeName());
     }
 }

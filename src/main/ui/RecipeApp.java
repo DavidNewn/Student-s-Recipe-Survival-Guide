@@ -80,9 +80,12 @@ public class RecipeApp {
 
         recipeList.addRecipe(recipe1); // Pasta Primavera
         recipeList.addRecipe(recipe2); // Minestrone Soup
+        recipeList.addRecipe(recipe3); // Vichyssoise
+        recipeList.addRecipe(recipe4); // Fried Rice
+        recipeList.addRecipe(recipe5); // Smoked Paprika Curry Sauce
+
         recipeListFav.addRecipe(recipe3); // Vichyssoise
         recipeListFav.addRecipe(recipe4); // Fried Rice
-        recipeList.addRecipe(recipe5); // Smoked Paprika Curry Sauce
     }
 
     private void displayMenu() {
@@ -109,6 +112,11 @@ public class RecipeApp {
                 case "a":
                     recipeListFav.addRecipe(recipe);
                     System.out.println(recipe.getRecipeName() + " added to favourite recipe list!");
+                    run = false;
+                    break;
+                case "r":
+                    recipeList.removeRecipe(recipe);
+                    System.out.println(recipe.getRecipeName() + " has been deleted from the main list");
                     run = false;
                     break;
                 case "p":
@@ -138,6 +146,7 @@ public class RecipeApp {
     private void displaySearchRecipeMain() {
         System.out.println("\nWhat would you like to do with this recipe?");
         System.out.println("\ta - Add recipe to favourite list");
+        System.out.println("\tr - Remove recipe from main list");
         System.out.println("\tp - Print recipe in full");
         System.out.println("\tq - Cancel selection and return");
     }
