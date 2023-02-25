@@ -1,6 +1,11 @@
 # My Personal Project - Student's Survival and Inspiration Recipe Cookbook
 ## _A recipe manager application for students_
 
+/*
+### TO DO/ASK LIST:
+- How to format fields for each recipe, and also ask to suppress checkstyle (descriptions can be quite long) 
+*/
+
 ### Summary List:
 - **What:** A recipe cookbook or library which users can refer to for recipes and ideas.
 - **Who:** College/University Students, with an interest in cooking but are inexperienced or 

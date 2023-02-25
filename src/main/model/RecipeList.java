@@ -3,50 +3,48 @@ package model;
 import java.util.ArrayList;
 
 public class RecipeList {
-    private ArrayList<Recipe> recipelist;
-    private ArrayList<Recipe> favouritelist;
+    private ArrayList<Recipe> recipeList;
 
-    // EFFECTS: create two lists of recipes
+    // EFFECTS: creates the main recipe list
     public RecipeList() {
-        recipelist = new ArrayList<Recipe>();
-        favouritelist = new ArrayList<Recipe>();
+        recipeList = new ArrayList<>();
     }
 
+    // REQUIRES: assume that the recipe list doesn't already contain the same recipe
     // MODIFIES: this
     // EFFECTS: adds recipe into the recipe list
-    public void addRecipe() {
-        //stub;
+    public void addRecipe(Recipe recipe) {
+        recipeList.add(recipe);
     }
 
     // REQUIRES: the recipe list to not be empty
     // MODIFIES: this
     // EFFECTS: removes recipe from the recipe list
-    public void removeRecipe() {
-        //stub;
+    public void removeRecipe(Recipe recipe) {
+        recipeList.remove(recipe);
     }
 
     // REQUIRES: the recipe list to not be empty
-    // EFFECTS: gets the recipe of the same name in the list, else returns "not found"
-    public void getRecipeName(RecipeList list, String name) {
-        //stub;
+    // EFFECTS: gets the first recipe of the same name in the list, else returns null
+    public Recipe getRecipe(String name) {
+        for (Recipe recipe : this.recipeList) {
+            if (recipe.getRecipeName().equalsIgnoreCase(name.toLowerCase())) {
+                return recipe;
+            }
+        }
+        return null;
     }
 
     // REQUIRES: the recipe list to not be empty
-    // EFFECTS: gets a list of recipes of the same category in the list, else returns "not found"
-    public void getRecipeCategory(RecipeList list, String category) {
-        //stub;
+    // EFFECTS: gets a list of recipes of the same category in the list, else return not found
+    public RecipeList getRecipeCategory(String category) {
+        RecipeList sameCategoryRecipe = new RecipeList();
+        for (Recipe recipe : recipeList) {
+            if (recipe.getCategory().equalsIgnoreCase(category.toLowerCase())) {
+                sameCategoryRecipe.addRecipe(recipe);
+            }
+        }
+        return sameCategoryRecipe;
     }
 
-    // MODIFIES: this
-    // EFFECTS: adds recipe into the favourite recipe list
-    public void addFavouriteRecipe() {
-        //stub;
-    }
-
-    // REQUIRES: favourite recipe list to not be empty
-    // MODIFIES: this
-    // EFFECTS: remove recipe from the favourite recipe list
-    public void removeFavouriteRecipe() {
-        //stub;
-    }
 }

@@ -5,15 +5,13 @@ public class Recipe {
     private String category;   //category of the recipe e.g. vegetarian, vegan, seafood
     private String ingredients;//the ingredients needed for the recipe
     private String steps;      //the steps for the recipe
-    private int id;            //recipe id
 
     // EFFECTS: recipe with a name, category, ingredients, steps, and an id
-    public Recipe(String name, String category, String ingredients, String steps, int id) {
+    public Recipe(String name, String category, String ingredients, String steps) {
         recipeName = name;
         this.category = category;
         this.ingredients = ingredients;
         this.steps = steps;
-        this.id = id;
     }
 
     // MODIFIES: this
@@ -40,12 +38,6 @@ public class Recipe {
         return this.steps = steps;
     }
 
-    // MODIFIES: this
-    // EFFECTS: changes the id of the recipe
-    public int changeId(Integer id) {
-        return this.id = id;
-    }
-
     public String getRecipeName() {
         return recipeName;
     }
@@ -60,9 +52,5 @@ public class Recipe {
 
     public String getSteps() {
         return steps;
-    }
-
-    public int getId() {
-        return id;
     }
 }
