@@ -94,26 +94,21 @@ public class RecipeApp {
     }
 
     // EFFECTS: processes commands for an individual recipe from the main recipe list
+    @SuppressWarnings("methodlength")
     private void processSearchRecipeMain() {
         Recipe recipe = searchRecipeMain();
-        if (recipe == null) {
-            return;
-        }
-        String name = recipe.getRecipeName();
-        System.out.println("Recipe found: " + name);
+        isFound(recipe);
 
         boolean run = true;
-        String command = null;
-
         while (run) {
             displaySearchRecipeMain();
-            command = input.nextLine();
+            String command = input.nextLine();
             command = command.toLowerCase();
 
             switch (command) {
                 case "a":
                     recipeListFav.addRecipe(recipe);
-                    System.out.println(name + " added to favourite recipe list!");
+                    System.out.println(recipe.getRecipeName() + " added to favourite recipe list!");
                     run = false;
                     break;
                 case "p":
@@ -121,7 +116,6 @@ public class RecipeApp {
                     run = false;
                     break;
                 case "q":
-                    System.out.println("Cancelled selection");
                     run = false;
                     break;
                 default:
@@ -149,27 +143,22 @@ public class RecipeApp {
     }
 
     // EFFECTS: processes commands for an individual recipe from the favourite list
-    // Duplicate code, will refactor later
+    @SuppressWarnings("methodlength")
     private void processSearchRecipeFav() {
         Recipe recipe = searchRecipeFav();
-        if (recipe == null) {
-            return;
-        }
-        String name = recipe.getRecipeName();
-        System.out.println("Recipe found: " + name);
+        isFound(recipe);
 
         boolean run = true;
-        String command = null;
 
         while (run) {
             displaySearchRecipeFav();
-            command = input.nextLine();
+            String command = input.nextLine();
             command = command.toLowerCase();
 
             switch (command) {
                 case "r":
                     recipeListFav.removeRecipe(recipe);
-                    System.out.println(name + " removed from the favourite recipe list");
+                    System.out.println(recipe.getRecipeName() + " removed from the favourite recipe list");
                     run = false;
                     break;
                 case "p":
@@ -177,7 +166,6 @@ public class RecipeApp {
                     run = false;
                     break;
                 case "q":
-                    System.out.println("Cancelled selection");
                     run = false;
                     break;
                 default:
@@ -204,6 +192,13 @@ public class RecipeApp {
         System.out.println("\tq - Cancel selection and return");
     }
 
+    // Helper function for searchRecipes
+    private void isFound(Recipe recipe) {
+        if (recipe == null) {
+            return;
+        }
+        System.out.println("Recipe found: " + recipe.getRecipeName());
+    }
 
     // EFFECTS: prints recipe
     private void printRecipe(Recipe recipe) {
