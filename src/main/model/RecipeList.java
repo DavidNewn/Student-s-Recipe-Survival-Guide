@@ -25,8 +25,8 @@ public class RecipeList {
     }
 
     // REQUIRES: the recipe list to not be empty
-    // EFFECTS: gets the first recipe of the same name in the list, else returns null
-    public Recipe getRecipe(String name) {
+    // EFFECTS: searches the first recipe of the same name in the list, else returns null
+    public Recipe searchRecipe(String name) {
         for (Recipe recipe : this.recipeList) {
             if (recipe.getRecipeName().equalsIgnoreCase(name.toLowerCase())) {
                 return recipe;
@@ -35,16 +35,11 @@ public class RecipeList {
         return null;
     }
 
-    // REQUIRES: the recipe list to not be empty
-    // EFFECTS: gets a list of recipes of the same category in the list, else return not found
-    public RecipeList getRecipeCategory(String category) {
-        RecipeList sameCategoryRecipe = new RecipeList();
-        for (Recipe recipe : recipeList) {
-            if (recipe.getCategory().equalsIgnoreCase(category.toLowerCase())) {
-                sameCategoryRecipe.addRecipe(recipe);
-            }
-        }
-        return sameCategoryRecipe;
+    public int size() {
+        return recipeList.size();
     }
 
+    public Recipe atIndex(int i) {
+        return recipeList.get(i);
+    }
 }
