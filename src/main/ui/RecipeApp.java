@@ -86,7 +86,7 @@ public class RecipeApp {
     }
 
     private void displayMenu() {
-        System.out.println("\nPick your recipe");
+        System.out.println("\nSelect your options!");
         System.out.println("\tprintall -> Print names of all recipes in both list");
         System.out.println("\ts -> Search for a recipe in the main list");
         System.out.println("\tf -> Search for a recipe in the favourite list");
@@ -205,18 +205,21 @@ public class RecipeApp {
     }
 
 
+    // EFFECTS: prints recipe
     private void printRecipe(Recipe recipe) {
-        System.out.println("=".repeat(40));
+        repetitionChar();
         System.out.printf("%s%s%n%s%s%n%s%s%n%s%n%s%n",
                 "Recipe Name: ", recipe.getRecipeName(),
                 "Category: ", recipe.getCategory(),
                 "Ingredients: ", recipe.getIngredients(),
                 "Steps: ", recipe.getSteps());
-        System.out.println("=".repeat(40));
+        System.out.println(); // for newline
+        repetitionChar();
     }
 
+    // EFFECTS: prints all names of recipes in both recipe and recipe favourite lists
     private void printAllRecipeNames() {
-        System.out.println("\n" + "=".repeat(40));
+        repetitionChar();
         System.out.println("\n**Main Recipe List**");
         for (int i = 0; i < recipeList.size(); i++) {
             Recipe recipe = recipeList.atIndex(i);
@@ -228,7 +231,17 @@ public class RecipeApp {
             Recipe recipe = recipeListFav.atIndex(i);
             System.out.println((i + 1) + ": " + recipe.getRecipeName());
         }
-        System.out.println("\n" + "=".repeat(40));
+        System.out.println(); // for newline
+        repetitionChar();
+    }
+
+    // EFFECTS: generates repeating chars for printing recipes. RIP no String.repeat
+    private void repetitionChar() {
+        char[] charArray = new char[40]; // of 40 length
+        for (int i = 0; i < 40; i++) {
+            charArray[i] = '=';
+        }
+        System.out.println(charArray);
     }
 
 
