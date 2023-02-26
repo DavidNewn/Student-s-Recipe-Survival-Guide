@@ -2,6 +2,9 @@ package model;
 
 import java.util.ArrayList;
 
+/*
+ * The main list of recipes. Users can add, remove, and search for recipes in the list.
+ */
 public class RecipeList {
     private ArrayList<Recipe> recipeList;
 

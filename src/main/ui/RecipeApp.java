@@ -6,6 +6,14 @@ import model.RecipeList;
 
 import java.util.Scanner;
 
+/*
+ * The interface which users engage with recipes
+ * Users can do the following in the RecipeApp:
+ * - Add a new recipe in the main list, or add an existing recipe in the main list to the favourite list.
+ * - Remove or edit recipes in either list
+ * - Search for recipes in either the main or favourite list by name
+ * - Print out an individual recipe in detail, or print out the list of names of recipes in both list.
+ */
 public class RecipeApp {
     private RecipeList recipeList;
     private RecipeListFav recipeListFav;
@@ -65,6 +73,8 @@ public class RecipeApp {
             processSearchRecipeMain();
         } else if (command.equals("f")) {
             processSearchRecipeFav();
+        } else if (command.equals("a")) {
+            recipeList.addRecipe(makeNewRecipe());
         } else {
             System.out.println("Invalid input, try again");
         }
@@ -88,14 +98,6 @@ public class RecipeApp {
         recipeListFav.addRecipe(recipe4); // Fried Rice
     }
 
-    private void displayMenu() {
-        System.out.println("\nSelect your options!");
-        System.out.println("\tprintall -> Print names of all recipes in both list");
-        System.out.println("\ts -> Search for a recipe in the main list");
-        System.out.println("\tf -> Search for a recipe in the favourite list");
-        System.out.println("\tq -> quit");
-    }
-
     // EFFECTS: processes commands for an individual recipe from the main recipe list
     @SuppressWarnings("methodlength")
     private void processSearchRecipeMain() {
@@ -109,7 +111,7 @@ public class RecipeApp {
             command = command.toLowerCase();
 
             switch (command) {
-                case "a":
+                case "f":
                     recipeListFav.addRecipe(recipe);
                     System.out.println(recipe.getRecipeName() + " added to favourite recipe list!");
                     run = false;
@@ -117,6 +119,10 @@ public class RecipeApp {
                 case "r":
                     recipeList.removeRecipe(recipe);
                     System.out.println(recipe.getRecipeName() + " has been deleted from the main list");
+                    run = false;
+                    break;
+                case "e":
+                    editRecipe(recipe);
                     run = false;
                     break;
                 case "p":
@@ -132,6 +138,8 @@ public class RecipeApp {
         }
     }
 
+    // REQUIRES: list to not be empty
+    // EFFECTS: returns recipe in the main list, else returns null
     private Recipe searchRecipeMain() {
         System.out.println("What are you searching for in the recipe list?");
         String recipe = input.nextLine();
@@ -143,12 +151,60 @@ public class RecipeApp {
         return found;
     }
 
-    private void displaySearchRecipeMain() {
-        System.out.println("\nWhat would you like to do with this recipe?");
-        System.out.println("\ta - Add recipe to favourite list");
-        System.out.println("\tr - Remove recipe from main list");
-        System.out.println("\tp - Print recipe in full");
-        System.out.println("\tq - Cancel selection and return");
+    // EFFECTS: makes a new recipe with user inputs
+    // No check for nulls yet
+    private Recipe makeNewRecipe() {
+        System.out.println("Input your new recipe!");
+
+        System.out.println("Name of the recipe:");
+        String name = input.nextLine();
+        System.out.println("Category of recipe");
+        String category = input.nextLine();
+        System.out.println("Ingredients");
+        String ingredients = input.nextLine();
+        System.out.println("Steps");
+        String steps = input.nextLine();
+
+        Recipe recipe = new Recipe(name, category, ingredients, steps);
+        System.out.println("Recipe Added");
+
+        return recipe;
+    }
+
+    // EFFECTS: process input for editing one of the fields for the recipe
+    // Works for now, but will refactor on a later date. Using suppress warnings for now.
+    @SuppressWarnings("methodlength")
+    private void editRecipe(Recipe recipe) {
+        boolean run = true;
+        while (run) {
+            displayEditMenu();
+            String command = input.nextLine();
+            command = command.toLowerCase();
+            switch (command) {
+                case "n":
+                    String name = editRecipeInput();
+                    recipe.changeRecipeName(name);
+                    run = false;
+                    break;
+                case "c":
+                    String category = editRecipeInput();
+                    recipe.changeCategory(category);
+                    run = false;
+                    break;
+                case "i":
+                    String ing = editRecipeInput();
+                    recipe.changeIngredients(ing);
+                    run = false;
+                    break;
+                case "s":
+                    String steps = editRecipeInput();
+                    recipe.changeSteps(steps);
+                    run = false;
+                    break;
+                default:
+                    System.out.println("Invalid input. Try again.");
+            }
+        }
     }
 
     // EFFECTS: processes commands for an individual recipe from the favourite list
@@ -183,6 +239,8 @@ public class RecipeApp {
         }
     }
 
+    // REQUIRES: list to not be empty
+    // EFFECTS: returns recipe if found in the favourite list, else returns null
     private Recipe searchRecipeFav() {
         System.out.println("What are you searching for in the favourite recipe list?");
         String recipe = input.nextLine();
@@ -194,6 +252,41 @@ public class RecipeApp {
         return found;
     }
 
+    // Helper function for searchRecipes
+    private void isFound(Recipe recipe) {
+        if (recipe == null) {
+            return;
+        }
+        System.out.println("Recipe found: " + recipe.getRecipeName());
+    }
+
+    // Helper function for editRecipe
+    private String editRecipeInput() {
+        System.out.println("Type your input");
+        return input.nextLine();
+    }
+
+    // EFFECTS: displays recipe app menu
+    private void displayMenu() {
+        System.out.println("\nSelect your options!");
+        System.out.println("\tprintall -> Print names of all recipes in both list");
+        System.out.println("\ts -> Search for a recipe in the main list");
+        System.out.println("\tf -> Search for a recipe in the favourite list");
+        System.out.println("\ta -> Add new recipe to the main list");
+        System.out.println("\tq -> quit");
+    }
+
+    // EFFECTS: displays recipe menu for searching the main list
+    private void displaySearchRecipeMain() {
+        System.out.println("\nWhat would you like to do with this recipe?");
+        System.out.println("\tf - Add recipe to favourite list");
+        System.out.println("\tr - Remove recipe from main list");
+        System.out.println("\te - Edit recipe");
+        System.out.println("\tp - Print recipe in full");
+        System.out.println("\tq - Cancel selection and return");
+    }
+
+    // EFFECTS: displays recipe menu for searching the fav list
     private void displaySearchRecipeFav() {
         System.out.println("\nWhat would you like to do with this favourite recipe?");
         System.out.println("\tr - Remove recipe from favourite list");
@@ -201,12 +294,13 @@ public class RecipeApp {
         System.out.println("\tq - Cancel selection and return");
     }
 
-    // Helper function for searchRecipes
-    private void isFound(Recipe recipe) {
-        if (recipe == null) {
-            return;
-        }
-        System.out.println("Recipe found: " + recipe.getRecipeName());
+    // EFFECTS: displays edit menu for the recipe
+    private void displayEditMenu() {
+        System.out.println("\nWhat would you like to do with this recipe?");
+        System.out.println("\tn - Change name");
+        System.out.println("\tc - Change category");
+        System.out.println("\ti - Change ingredients");
+        System.out.println("\ts - Change steps");
     }
 
     // EFFECTS: prints recipe
@@ -247,8 +341,4 @@ public class RecipeApp {
         }
         System.out.println(charArray);
     }
-
-
-    //!!! Provide option to rename parts of a recipe, add a new one, etc.
-
 }

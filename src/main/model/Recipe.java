@@ -1,5 +1,9 @@
 package model;
 
+/*
+ * The Recipe claas, representing a recipe with a name, category, ingredients, and steps.
+ *
+ */
 public class Recipe {
     private String recipeName; //name of the recipe
     private String category;   //category of the recipe e.g. vegetarian, vegan, seafood
