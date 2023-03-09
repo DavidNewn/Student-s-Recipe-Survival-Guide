@@ -15,7 +15,7 @@ public class RecipeListTest {
 
     @BeforeEach
     public void setup() {
-        recipeListTest = new RecipeList();
+        recipeListTest = new RecipeList("Recipe Main");
 
         testRecipe1 = new Recipe("Pasta Primavera","Vegetarian","Pasta, Veggies",
                 "1. Boil pasta. 2. Add veggies. 3. Serve hot");

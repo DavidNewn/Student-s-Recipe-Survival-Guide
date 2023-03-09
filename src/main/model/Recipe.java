@@ -1,10 +1,16 @@
 package model;
 
+import org.json.JSONObject;
+import persistence.Writable;
+
 /*
  * The Recipe claas, representing a recipe with a name, category, ingredients, and steps.
  *
+ * !!! TO DO:
+ * Change Steps into either a list of string or steps class
+ * Maybe use a hashmap to categorise list; need id
  */
-public class Recipe {
+public class Recipe implements Writable {
     private String recipeName; //name of the recipe
     private String category;   //category of the recipe e.g. vegetarian, vegan, seafood
     private String ingredients;//the ingredients needed for the recipe
@@ -56,5 +62,15 @@ public class Recipe {
 
     public String getSteps() {
         return steps;
+    }
+
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("name", recipeName);
+        json.put("category", category);
+        json.put("ingredients", ingredients);
+        json.put("steps", steps);
+        return json;
     }
 }

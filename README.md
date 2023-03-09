@@ -4,11 +4,13 @@
 /*
 ### TO DO/ASK LIST:
 - How to format fields for each recipe, and also ask to suppress checkstyle (descriptions can be quite long) 
+    - abstract steps field as a list of string or a steps object with its own class
+- Consider hashmap for recipe management
 */
 
 ### Summary List:
 - **What:** A recipe cookbook or library which users can refer to for recipes and ideas.
-- **Who:** College/University Students, with an interest in cooking but are inexperienced or 
+- **Who:** College/University students, with an interest in cooking but are inexperienced or 
   have minimal experience in cooking, and who want to reduce food waste.
 - **Why:** For the past three weeks since I've arrived in Vancouver, having only studied online beforehand, 
   I've taken a great interest in cooking. Making my own meals for home and for school really engages me, and I find 
@@ -26,6 +28,9 @@ __As a college/university student, I would want to do things such as...__
  - adding other things in a recipe which I might find useful like additional comments, ratings,
    or cost of ingredients and the meal itself (cost per ingredients and per serving for meal?).
 
+ - being able to save my recipe lists to file (if I so choose), and load it when I relaunch the program
+ - when quiting the application, I want to be reminded to save my current recipe list and have the option not to do so
+
 ### Recipe Criteria
 1. Generally have less than 10 main ingredients (sauces, spices, condiments, garnish, and others will not count)
 2. Have ingredients not be too expensive and relatively accessible to get (in this case, for students in Van, Canada)
@@ -33,7 +38,7 @@ __As a college/university student, I would want to do things such as...__
 4. Have the meal not take too long to prepare overall (though must consider prep overnight as well)
 
 ### Recipe Format
-- Name of the recipe
+- Name of the recipe; no duplicate names
 - Category of the recipe. Examples include vegetarian, vegan, seafood, etc.
   - (Recipe could have multiple categories, e.g. vegetarian, soup)
 - Ingredients needed for the recipe, with amounts for each

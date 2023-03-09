@@ -1,18 +1,26 @@
 package model;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+import persistence.Writable;
+
 import java.util.ArrayList;
 
 /*
  * The main list of recipes. Users can add, remove, and search for recipes in the list.
  */
-public class RecipeList {
+public class RecipeList implements Writable {
+    private String name;
     private ArrayList<Recipe> recipeList;
 
     // EFFECTS: creates the main recipe list
-    public RecipeList() {
+    public RecipeList(String name) {
+        this.name = name;
         recipeList = new ArrayList<>();
     }
 
+    // !!! CHANGE: only allow one reference of the same name in either list.
+    // !!! Warn users of this and give option to change name
     // REQUIRES: assume that the recipe list doesn't already contain the same recipe
     // MODIFIES: this
     // EFFECTS: adds recipe into the recipe list
@@ -20,6 +28,7 @@ public class RecipeList {
         recipeList.add(recipe);
     }
 
+    // !!! BUG: deleting reference from main list does not delete from favs
     // REQUIRES: the recipe list to not be empty
     // MODIFIES: this
     // EFFECTS: removes recipe from the recipe list
@@ -44,5 +53,28 @@ public class RecipeList {
 
     public Recipe atIndex(int i) {
         return recipeList.get(i);
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("name", name);
+        json.put("Recipe", thingiesToJson());
+        return json;
+    }
+
+    // EFFECTS: returns things in this workroom as a JSON array
+    private JSONArray thingiesToJson() {
+        JSONArray jsonArray = new JSONArray();
+
+        for (Recipe r : recipeList) {
+            jsonArray.put(r.toJson());
+        }
+
+        return jsonArray;
     }
 }
