@@ -24,6 +24,7 @@ public class RecipeList implements Writable {
     // REQUIRES: assume that the recipe list doesn't already contain the same recipe
     // MODIFIES: this
     // EFFECTS: adds recipe into the recipe list
+
     public void addRecipe(Recipe recipe) {
         recipeList.add(recipe);
     }
@@ -34,6 +35,7 @@ public class RecipeList implements Writable {
     // EFFECTS: removes recipe from the recipe list
     public void removeRecipe(Recipe recipe) {
         recipeList.remove(recipe);
+        System.out.println(recipe.getRecipeName() + " has been deleted from the main list");
     }
 
     // REQUIRES: the recipe list to not be empty
@@ -77,4 +79,5 @@ public class RecipeList implements Writable {
 
         return jsonArray;
     }
+
 }

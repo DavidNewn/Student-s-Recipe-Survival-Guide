@@ -1,6 +1,8 @@
 package persistence;
 
 import model.RecipeList;
+import model.RecipeListFav;
+import model.RecipeLists;
 import org.json.JSONObject;
 
 import java.io.*;
@@ -17,16 +19,17 @@ public class JsonWriter {
     }
 
     // MODIFIES: this
-// EFFECTS: opens writer; throws FileNotFoundException if destination file cannot
-// be opened for writing
+    // EFFECTS: opens writer; throws FileNotFoundException if destination file cannot
+    // be opened for writing
     public void open() throws FileNotFoundException {
         writer = new PrintWriter(new File(destination));
     }
 
     // MODIFIES: this
-    // EFFECTS: writes JSON representation of workroom to file
-    public void write(RecipeList wr) {
-        JSONObject json = wr.toJson();
+    // EFFECTS: creates collection of main recipe list and favourite list, then
+    // writes JSON representation of both recipes list to file
+    public void write(RecipeLists recipeLists) {
+        JSONObject json = recipeLists.toJson();
         saveToFile(json.toString(TAB));
     }
 

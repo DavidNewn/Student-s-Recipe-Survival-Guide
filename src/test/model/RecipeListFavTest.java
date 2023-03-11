@@ -13,7 +13,7 @@ public class RecipeListFavTest {
 
     @BeforeEach
     public void setup() {
-        recipeListFav = new RecipeListFav();
+        recipeListFav = new RecipeListFav("Favourite Recipes");
         testRecipe1 = new Recipe("Pasta Primavera","Vegetarian","Pasta, Veggies",
                 "1. Boil pasta. 2. Add veggies. 3. Serve hot");
         testRecipe2 = new Recipe("Minestrone Soup","Soup","Veggies",

@@ -2,6 +2,8 @@ package persistence;
 
 import model.Recipe;
 import model.RecipeList;
+import model.RecipeListFav;
+import model.RecipeLists;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -16,17 +18,20 @@ import java.util.stream.Stream;
 public class JsonReader {
     private String source;
 
-    // EFFECTS: constructs reader to read JSON data
+    // EFFECTS: constructs reader to read JSON data, with the key for Recipe Lists
     public JsonReader(String source) {
         this.source = source;
     }
 
-    public RecipeList read() throws IOException {
+    // EFFECTS: reads RecipeLists (main and favourite list) from file and returns it
+    // throws IOException if an error occurs reading data from file
+    public RecipeLists read(String keyRecipeLists, String keyRecipeMain, String keyRecipeFav) throws IOException {
         String jsonData = readFile(source);
         JSONObject jsonObject = new JSONObject(jsonData);
-        return parseRecipeList(jsonObject);
+        return parseRecipeList(jsonObject, keyRecipeLists, keyRecipeMain, keyRecipeFav);
     }
 
+    // EFFECTS: reads source file as string and returns it
     private String readFile(String source) throws IOException {
         StringBuilder contentBuilder = new StringBuilder();
 
@@ -37,21 +42,31 @@ public class JsonReader {
         return contentBuilder.toString();
     }
 
-    private RecipeList parseRecipeList(JSONObject jsonObject) {
-        String name = jsonObject.getString("name");
-        RecipeList rl = new RecipeList(name);
-        addRecipes(rl, jsonObject);
-        return rl;
+    // EFFECTS: parses RecipeLists (main and favourite list) from JSON object and returns it
+    // Notes to self:
+    // Recipe Lists / jsonObject name: "Recipe Lists"
+    // Main recipe list name: "Main Recipes"
+    // Favourite recipe list name: "Favourite Recipes"
+    private RecipeLists parseRecipeList(JSONObject jsonObject, String keyRecipeLists,
+                                        String keyRecipeMain, String keyRecipeFav) {
+        RecipeList rl = new RecipeList(keyRecipeMain);
+        RecipeListFav rlf = new RecipeListFav(keyRecipeFav);
+        addRecipes(rl, rl.getName(), jsonObject);
+        addRecipes(rlf, rlf.getName(), jsonObject);
+
+        return new RecipeLists(keyRecipeLists, rl, rlf);
     }
 
-    private void addRecipes(RecipeList rl, JSONObject jsonObject) {
-        JSONArray jsonArray = jsonObject.getJSONArray("Recipe");
+    // EFFECTS: parses each recipe corresponding to its key in the JSON data and adds the recipes into the recipe list
+    private void addRecipes(RecipeList rl, String key, JSONObject jsonObject) {
+        JSONArray jsonArray = jsonObject.getJSONArray(key);
         for (Object json : jsonArray) {
             JSONObject nextRecipe = (JSONObject) json;
             addRecipe(rl, nextRecipe);
         }
     }
 
+    // EFFECTS: parses the recipe's field from the JSON object data and returns the recipe
     private void addRecipe(RecipeList rl, JSONObject jsonObject) {
         String name = jsonObject.getString("name");
         String category = jsonObject.getString("category");

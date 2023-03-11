@@ -3,32 +3,35 @@ package ui;
 import model.Recipe;
 import model.RecipeListFav;
 import model.RecipeList;
+import model.RecipeLists;
 import persistence.JsonReader;
 import persistence.JsonWriter;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.List;
 import java.util.Scanner;
 
-/*
- * The interface which users engage with recipes
+/**
+ * __The Recipe App interface which users engage with recipes__
  * Users can do the following in the RecipeApp:
  * - Add a new recipe in the main list, or add an existing recipe in the main list to the favourite list.
  * - Remove or edit recipes in either list !!! must change
  * - Search for recipes in either the main or favourite list by name
  * - Print out an individual recipe in detail, or print out the list of names of recipes in both list.
-
- * !!! TO DO:
- * - Data Persistence
- * */
+*/
 public class RecipeApp {
-    private static final String JSON_STORE = "./data/workroom.json";
+    private static final String JSON_STORE = "./data/RecipeApp.json";
     private RecipeList recipeList;
     private RecipeListFav recipeListFav;
+    private RecipeLists recipeLists;
     private JsonWriter jsonWriter;
     private JsonReader jsonReader;
     private Scanner input;
+
+    // Set names of keys for recipe lists
+    private final String keyRecipeLists = "Recipe Lists";
+    private final String keyRecipeListMain = "Main Recipes";
+    private final String keyRecipeListFav = "Favourite Recipes";
 
     // Default recipe list:
     protected Recipe recipe1 = new Recipe("Pasta Primavera","Vegetarian","Pasta, Veggies",
@@ -96,10 +99,11 @@ public class RecipeApp {
     // MODIFIES: this
     // EFFECTS: initializes recipe list and favourite recipe list
     private void init() {
-        jsonWriter = new JsonWriter(JSON_STORE);;
+        jsonWriter = new JsonWriter(JSON_STORE);
         jsonReader = new JsonReader(JSON_STORE);
-        recipeList = new RecipeList("Recipe Main");
-        recipeListFav = new RecipeListFav();
+        recipeList = new RecipeList(keyRecipeListMain);
+        recipeListFav = new RecipeListFav(keyRecipeListFav);
+        recipeLists = new RecipeLists(keyRecipeLists, recipeList, recipeListFav);
         input = new Scanner(System.in);
         input.useDelimiter("/n");
 
@@ -113,7 +117,6 @@ public class RecipeApp {
         recipeListFav.addRecipe(recipe4); // Fried Rice
     }
 
-    // !!! Refactor to not suppress checkstyle
     // EFFECTS: processes commands for an individual recipe from the main recipe list
     private void processSearchRecipeMain() {
         Recipe recipe = searchRecipeMain();
@@ -121,17 +124,13 @@ public class RecipeApp {
         outer:
         while (recipe != null) {
             displaySearchRecipeMain();
-            String command = input.nextLine();
-            command = command.toLowerCase();
 
-            switch (command) {
+            switch (readCommand()) {
                 case "f":
                     recipeListFav.addRecipe(recipe);
-                    System.out.println(recipe.getRecipeName() + " added to favourite recipe list!");
                     break outer;
                 case "r":
                     recipeList.removeRecipe(recipe);
-                    System.out.println(recipe.getRecipeName() + " has been deleted from the main list");
                     break outer;
                 case "e":
                     editRecipe(recipe);
@@ -207,7 +206,6 @@ public class RecipeApp {
             switch (command) {
                 case "r":
                     recipeListFav.removeRecipe(recipe);
-                    System.out.println(recipe.getRecipeName() + " removed from the favourite recipe list");
                     break outer;
                 case "p":
                     printRecipe(recipe);
@@ -235,7 +233,7 @@ public class RecipeApp {
         return recipe;
     }
 
-    // !!! Very similar to searchRecipeMain. Works for now, but create abstract class
+    // !!! Very similar to searchRecipeMain. Works for now, but create abstract class?
     // REQUIRES: list to not be empty
     // EFFECTS: returns recipe if found in the favourite list, else returns null
     private Recipe searchRecipeFav() {
@@ -258,8 +256,11 @@ public class RecipeApp {
         return input.nextLine();
     }
 
-    // !!! another switch case for dealing with searchRecipeMain commands?
-
+    // Helper function for reading user commands. Converts user commands to lowercase too.
+    private String readCommand() {
+        String command = input.nextLine();
+        return command = command.toLowerCase();
+    }
 
     // EFFECTS: displays the starting recipe app menu
     private void displayMenu() {
@@ -339,11 +340,11 @@ public class RecipeApp {
         System.out.println(charArray);
     }
 
+    // EFFECTS: calls jsonWriter and saves the recipeLists (main and favourite list) as JSON file
     private void saveRecipeApp() {
         try {
             jsonWriter.open();
-            jsonWriter.write(recipeList);
-            jsonWriter.write(recipeListFav);
+            jsonWriter.write(recipeLists);
             jsonWriter.close();
             System.out.println("Saved main and favourite recipes to " + JSON_STORE);
         } catch (FileNotFoundException e) {
@@ -352,10 +353,15 @@ public class RecipeApp {
         }
     }
 
+    // EFFECTS: calls jsonReader and loads the main and favourite list from reading the JSON file data
     private void loadRecipeApp() {
         try {
-            recipeList = jsonReader.read();
-            System.out.println("Loaded " + recipeList.getName() + " from " + JSON_STORE);
+            recipeLists = jsonReader.read(keyRecipeLists, keyRecipeListMain, keyRecipeListFav);
+            recipeList = recipeLists.getRecipeList();
+            recipeListFav = recipeLists.getRecipeListFav();
+
+            System.out.println("Loaded " + recipeList.getName() + " & " + recipeListFav.getName() + " from "
+                    + JSON_STORE);
         } catch (IOException e) {
             System.out.println("Unable to read from file: " + JSON_STORE);
         }
