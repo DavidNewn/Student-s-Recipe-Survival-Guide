@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * The main list of recipes. Users can add, remove, and search for recipes in this list.
  */
-public class RecipeList implements Writable {
+public class RecipeList {
     private String name;
     private ArrayList<Recipe> recipeList;
 
@@ -67,24 +67,4 @@ public class RecipeList implements Writable {
     public String getName() {
         return name;
     }
-
-    @Override
-    public JSONObject toJson() {
-        JSONObject json = new JSONObject();
-        json.put("name", name);
-        json.put("Recipe", thingiesToJson());
-        return json;
-    }
-
-    // EFFECTS: returns things in this workroom as a JSON array
-    private JSONArray thingiesToJson() {
-        JSONArray jsonArray = new JSONArray();
-
-        for (Recipe r : recipeList) {
-            jsonArray.put(r.toJson());
-        }
-
-        return jsonArray;
-    }
-
 }
