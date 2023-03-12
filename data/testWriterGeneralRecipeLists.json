@@ -1,0 +1,29 @@
+{
+    "Favourite Recipes": [{
+        "name": "Pasta Primavera",
+        "ingredients": "Pasta, Veggies",
+        "category": "Vegetarian",
+        "steps": "1. Boil pasta. 2. Add veggies. 3. Serve hot"
+    }],
+    "name": "Test",
+    "Main Recipes": [
+        {
+            "name": "Pasta Primavera",
+            "ingredients": "Pasta, Veggies",
+            "category": "Vegetarian",
+            "steps": "1. Boil pasta. 2. Add veggies. 3. Serve hot"
+        },
+        {
+            "name": "Test",
+            "ingredients": "Vanilla Extract, Ginger, Oregano",
+            "category": "Ice Cream",
+            "steps": "1. Google the recipe. 2. Mix everything into an ice cream machine. 3. Profit (I promise it's a good combination)"
+        },
+        {
+            "name": "Minestrone Soup",
+            "ingredients": "Veggies",
+            "category": "Soup",
+            "steps": "1. Add chopped veggies to boiling water. 2. When veggies are soft, serve"
+        }
+    ]
+}

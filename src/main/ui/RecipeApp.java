@@ -64,12 +64,16 @@ public class RecipeApp {
 
         while (run) {
             displayMenu();
-            command = input.nextLine();
-            command = command.toLowerCase();
+            command = readCommand();
 
             if (command.equals("quit")) {
-                run = false;
-            } else { //Maybe check for null?
+                displayMenuQuitPrompt();
+                command = readCommand();
+                if (command.equals("y")) {
+                    run = false;
+                }
+                System.out.println("Cancelled quit prompt");
+            } else {
                 processRecipeList(command);
             }
         }
@@ -277,6 +281,13 @@ public class RecipeApp {
         System.out.println("\tsave -> Save current recipe list");
         System.out.println("\tload -> Load recipe list");
         System.out.println("\tquit -> Quit application");
+    }
+
+    // EFFECTS: displays the quit prompt as user wants to quit
+    private void displayMenuQuitPrompt() {
+        System.out.println("\nQuiting the recipe app?");
+        System.out.println("Be sure to SAVE your current recipe state before doing so");
+        System.out.println("Type y to quit. Any other button to remain.");
     }
 
     // EFFECTS: displays recipe menu for searching the main list
