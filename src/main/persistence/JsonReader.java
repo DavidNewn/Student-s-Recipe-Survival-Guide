@@ -53,14 +53,15 @@ public class JsonReader {
                                         String keyRecipeMain, String keyRecipeFav) {
         RecipeList rl = new RecipeList(keyRecipeMain);
         RecipeListFav rlf = new RecipeListFav(keyRecipeFav);
-        addRecipes(rl, rl.getName(), jsonObject);
-        addRecipes(rlf, rlf.getName(), jsonObject);
+        addRecipes(rl, jsonObject);
+        addRecipes(rlf, jsonObject);
 
         return new RecipeLists(keyRecipeLists, rl, rlf);
     }
 
     // EFFECTS: parses each recipe corresponding to its key in the JSON data and adds the recipes into the recipe list
-    private void addRecipes(RecipeList rl, String key, JSONObject jsonObject) {
+    private void addRecipes(RecipeList rl, JSONObject jsonObject) {
+        String key = rl.getName();
         JSONArray jsonArray = jsonObject.getJSONArray(key);
         for (Object json : jsonArray) {
             JSONObject nextRecipe = (JSONObject) json;
