@@ -4,6 +4,9 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import persistence.Writable;
 
+/**
+ * Represents both the main and favourite recipe lists for easier processing
+ */
 public class RecipeLists implements Writable {
     private String name;
     private RecipeList recipeListMain; // name: "Main Recipes"
@@ -14,6 +17,10 @@ public class RecipeLists implements Writable {
         this.name = name;
         recipeListMain = rl;
         recipeListFav = rlf;
+    }
+
+    public String getName() {
+        return this.name;
     }
 
     public RecipeList getRecipeList() {

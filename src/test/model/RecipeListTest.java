@@ -29,6 +29,11 @@ public class RecipeListTest {
     }
 
     @Test
+    void testConstructor() {
+        assertEquals("Recipe Main", recipeListTest.getName());
+    }
+
+    @Test
     public void testAddOneRecipeToList() {
         recipeListTest.addRecipe(testRecipe1);
         assertEquals(1, recipeListTest.size());

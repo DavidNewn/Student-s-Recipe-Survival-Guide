@@ -5,9 +5,11 @@ import org.json.JSONObject;
 import persistence.Writable;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
-/*
- * The main list of recipes. Users can add, remove, and search for recipes in the list.
+/**
+ * The main list of recipes. Users can add, remove, and search for recipes in this list.
  */
 public class RecipeList implements Writable {
     private String name;
@@ -55,6 +57,11 @@ public class RecipeList implements Writable {
 
     public Recipe atIndex(int i) {
         return recipeList.get(i);
+    }
+
+    // EFFECTS: returns an unmodifiable list of recipe list
+    public List<Recipe> getRecipeListCollection() {
+        return Collections.unmodifiableList(recipeList);
     }
 
     public String getName() {

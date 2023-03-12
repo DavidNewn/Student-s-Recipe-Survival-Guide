@@ -120,14 +120,12 @@ public class RecipeApp {
     // EFFECTS: processes commands for an individual recipe from the main recipe list
     private void processSearchRecipeMain() {
         Recipe recipe = searchRecipeMain();
-
         outer:
         while (recipe != null) {
             displaySearchRecipeMain();
-
             switch (readCommand()) {
                 case "f":
-                    recipeListFav.addRecipe(recipe);
+                    addRecipeHelper(recipe);
                     break outer;
                 case "r":
                     recipeList.removeRecipe(recipe);
@@ -260,6 +258,13 @@ public class RecipeApp {
     private String readCommand() {
         String command = input.nextLine();
         return command = command.toLowerCase();
+    }
+
+    // Helper function specifically for adding recipe into favourite recipe list
+    // (and evade Checkstyle length until I find a better solution)
+    private void addRecipeHelper(Recipe recipe) {
+        recipeListFav.addRecipe(recipe);
+        System.out.println(recipe.getRecipeName() + " added to the favourite recipe list");
     }
 
     // EFFECTS: displays the starting recipe app menu

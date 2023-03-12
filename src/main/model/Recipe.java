@@ -3,11 +3,12 @@ package model;
 import org.json.JSONObject;
 import persistence.Writable;
 
-/*
+/**
  * The Recipe claas, representing a recipe with a name, category, ingredients, and steps.
  *
  * !!! TO DO:
- * Change Steps into either a list of string or steps class
+ * Change ingredients into either a list of string or ingredients class
+ * Change steps into either a list of string or steps class
  * Maybe use a hashmap to categorise list; need id
  */
 public class Recipe implements Writable {

@@ -13,8 +13,10 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.stream.Stream;
 
-// Represents a reader that reads a recipe and favourite recipe list from JSON data stored in file
-// Template from workroom example
+/**
+ * Represents a reader that reads a recipe and favourite recipe list from JSON data stored in file
+ * Template from workroom example
+ */
 public class JsonReader {
     private String source;
 

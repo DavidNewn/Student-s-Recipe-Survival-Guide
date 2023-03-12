@@ -26,6 +26,11 @@ public class RecipeListFavTest {
     }
 
     @Test
+    public void testConstructor() {
+        assertEquals("Favourite Recipes", recipeListFav.getName());
+    }
+
+    @Test
     public void testAddOneRecipeToFav() {
         recipeListFav.addRecipe(testRecipe1);
         assertEquals(1, recipeListFav.size());

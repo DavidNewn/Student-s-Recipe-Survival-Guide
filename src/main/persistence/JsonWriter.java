@@ -7,7 +7,9 @@ import org.json.JSONObject;
 
 import java.io.*;
 
-// Represents a writer t
+/**
+ * Represents a writer that writes a JSON representation of the main and favourite list to file
+*/
 public class JsonWriter {
     private static final int TAB = 4;
     private PrintWriter writer;
@@ -26,7 +28,7 @@ public class JsonWriter {
     }
 
     // MODIFIES: this
-    // EFFECTS: creates collection of main recipe list and favourite list, then
+    // EFFECTS: uses collection of main recipe list and favourite list, then
     // writes JSON representation of both recipes list to file
     public void write(RecipeLists recipeLists) {
         JSONObject json = recipeLists.toJson();
