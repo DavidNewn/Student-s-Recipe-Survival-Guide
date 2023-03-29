@@ -4,7 +4,6 @@ import model.Recipe;
 import model.RecipeList;
 import model.RecipeListFav;
 import model.RecipeLists;
-import org.junit.platform.commons.util.StringUtils;
 import persistence.JsonReader;
 import persistence.JsonWriter;
 
@@ -15,7 +14,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
 
-import static java.util.Objects.isNull;
 import static javax.swing.ListSelectionModel.SINGLE_SELECTION;
 
 /**
@@ -35,7 +33,11 @@ public class RecipeMainFrame extends JFrame implements ActionListener {
     private static final int HEIGHT = 720;
     private JScrollPane listScrollPane;
     private JLabel header;
-    private JInternalFrame recipeFrame;
+    private JInternalFrame recipeFrame = new JInternalFrame();
+    private JTextField textIngredients = new JTextField();
+    private JTextField textSteps = new JTextField();
+    private JLabel labelRecipeName2 = new JLabel();
+    private JLabel labelRecipeCat2 = new JLabel();
     private JList listRecipe;
     private DefaultListModel<Recipe> modelMain = new DefaultListModel<>();
     private DefaultListModel<Recipe> modelFav = new DefaultListModel<>();
@@ -88,8 +90,9 @@ public class RecipeMainFrame extends JFrame implements ActionListener {
     private void createRecipeAppFrame() {
         this.addMenu();
         this.mainButtonPanels();
-        this.addRecipeFrame();
+        this.topButtonPanels();
         this.mainList();
+        this.createRecipeFrame();
 
         this.add(buttonTopPane);
         this.add(buttonBotPane);
@@ -97,13 +100,13 @@ public class RecipeMainFrame extends JFrame implements ActionListener {
         this.add(recipeFrame);
 
         JSplitPane splitTop = new JSplitPane(JSplitPane.VERTICAL_SPLIT, buttonTopPane, listScrollPane);
-        JSplitPane splitList = new JSplitPane(JSplitPane.VERTICAL_SPLIT, listScrollPane, buttonBotPane);
+        JSplitPane splitList = new JSplitPane(JSplitPane.VERTICAL_SPLIT, splitTop, buttonBotPane);
         JSplitPane splitAll = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, splitList, recipeFrame);
-        splitTop.setDividerLocation(60);
+        // Combined all panels to splitAll
+        splitTop.setDividerLocation(30);
         splitList.setDividerLocation(HEIGHT - 120);
         splitAll.setDividerLocation(WIDTH / 4);
         splitAll.setDividerSize(5);
-        // Combined all panels to splitAll
         // FIX: minimum panel size constraints when resizing
 
         this.add(splitAll);
@@ -128,6 +131,7 @@ public class RecipeMainFrame extends JFrame implements ActionListener {
         recipeList = new RecipeList(keyRecipeListMain);
         recipeListFav = new RecipeListFav(keyRecipeListFav);
 
+        buttonTopPane.setLayout(new GridLayout(1,1));
         buttonBotPane.setLayout(new GridLayout(2,2));
         btnCreateRecipe = new JButton(new CreateRecipeAction());
         btnAddToFav = new JButton(new AddRecipeToFavAction());
@@ -140,7 +144,14 @@ public class RecipeMainFrame extends JFrame implements ActionListener {
         listScrollPane = new JScrollPane(listRecipe);
         createListSelectionListener(); // creates list selection listener
 
-        //Load default recipes
+        textIngredients.setEditable(false);
+        textSteps.setEditable(false);
+
+        loadDefaultRecipeLists();
+    }
+
+    // EFFECTS: Loads default recipes in both list
+    private void loadDefaultRecipeLists() {
         recipeList.addRecipe(recipe1); // Pasta Primavera
         recipeList.addRecipe(recipe2); // Minestrone Soup
         recipeList.addRecipe(recipe3); // Vichyssoise
@@ -150,18 +161,17 @@ public class RecipeMainFrame extends JFrame implements ActionListener {
         recipeListFav.addRecipe(recipe4); // Fried Rice
     }
 
-
     // EFFECTS: helper that creates the menu bar. Contains the save and load options
     private void addMenu() {
         JMenuBar menuBar = new JMenuBar();
 
         saveMenu = new JMenuItem("Save");
-        saveMenu.setMnemonic(KeyEvent.VK_S);
+        saveMenu.setAccelerator(KeyStroke.getKeyStroke("control S"));
         saveMenu.addActionListener(this);
         menuBar.add(saveMenu);
 
         loadMenu = new JMenuItem("Load");
-        loadMenu.setMnemonic(KeyEvent.VK_L);
+        loadMenu.setAccelerator(KeyStroke.getKeyStroke("control L"));
         loadMenu.addActionListener(this);
         menuBar.add(loadMenu);
 
@@ -169,20 +179,21 @@ public class RecipeMainFrame extends JFrame implements ActionListener {
     }
 
     // EFFECTS: creates the buttons and button panel for the main recipe list
-    public void mainButtonPanels() {
-        btnAddToFav.setMnemonic(KeyEvent.VK_F); // to set to CTRL+F to fav
+    private void mainButtonPanels() {
         buttonBotPane.removeAll();
-        buttonBotPane.add(btnCreateRecipe);
+        buttonBotPane.add(btnAddToFav);
         buttonBotPane.add(btnRemoveRecipe);
         buttonBotPane.add(btnEditRecipe);
         buttonBotPane.add(btnSwitchList);
+
+        btnAddToFav.setMnemonic(KeyEvent.VK_F); // to set to CTRL+F to fav
 
         btnRemoveRecipe.setEnabled(false);
         buttonBotPane.updateUI();
     }
 
     // EFFECTS: creates the buttons and button panel for the favourite recipe list
-    public void favButtonPanels() {
+    private void favButtonPanels() {
         buttonBotPane.removeAll();
         buttonBotPane.add(new JButton("-")); // an empty button, just to take up space
         buttonBotPane.add(btnRemoveFromFav);
@@ -193,15 +204,20 @@ public class RecipeMainFrame extends JFrame implements ActionListener {
         buttonBotPane.updateUI();
     }
 
-    // MODIFIES: recipeFrame
-    // EFFECTS: creates and assembles all the frame displaying details of the selected recipe
-    private void addRecipeFrame() {
-        recipeFrame = new JInternalFrame();
-        JPanel outsidePanel = new JPanel();
-        JPanel insidePanel = new JPanel();
+    // EFFECTS: creates the top button panel. Does not change.
+    public void topButtonPanels() {
+        buttonTopPane.add(btnCreateRecipe);
+        buttonTopPane.updateUI();
+    }
 
-        createAllPanels(outsidePanel, insidePanel);
-        recipeFrame.add(outsidePanel);
+    // MODIFIES: recipeFrame
+    // EFFECTS: main method called to create and assemble all the frame displaying details of the selected recipe
+    private void createRecipeFrame() {
+        JPanel topPanels = new JPanel();
+        JPanel rowPanels = new JPanel();
+
+        createAllPanels(rowPanels, topPanels);
+        recipeFrame.add(rowPanels);
 
         removeTitleInternalFrame(recipeFrame);
         recipeFrame.setVisible(true);
@@ -215,84 +231,66 @@ public class RecipeMainFrame extends JFrame implements ActionListener {
     }
 
     // EFFECTS: creates all the panels.
-    // panelLeft contains recipe name and category
-    // panelRight contains the img of the recipe
-    // panelCenter contains the ingredients of the recipe
-    // panelBot contains the steps of the recipe
+    // - panelLeft contains recipe name and category
+    // - panelRight contains the img of the recipe
+    // - panelCenter contains the ingredients of the recipe
+    // - panelBot contains the steps of the recipe
     private JPanel createAllPanels(JPanel outsidePanel, JPanel insidePanel) {
         JPanel panelLeft = new JPanel();
-        JPanel panelRight = new JPanel();
+        JPanel panelImg = new JPanel();
         JPanel panelCenter = new JPanel();
         JPanel panelBot = new JPanel();
+        JLabel labelRecipeName1 = new JLabel("Name: ");
+        JLabel labelRecipeCat1 = new JLabel("Category: ");
 
         insidePanel.setLayout(new GridLayout(1, 2));
         outsidePanel.setLayout(new GridLayout(3, 1));
+        panelLeft.setLayout(new GridLayout(2,2));
 
-        panelLeft.setBackground(new Color(244, 0,200));
-        panelRight.setBackground(new Color(0, 224,200));
-        panelCenter.setBackground(new Color(0,0,0));
-        panelBot.setBackground(new Color(0, 0,200));
+        panelImg.setBackground(new Color(244, 0, 144)); // stub
+        panelCenter.add(textIngredients);
+        panelBot.add(textSteps);
+        panelLeft.add(labelRecipeName1);
+        panelLeft.add(labelRecipeName2);
+        panelLeft.add(labelRecipeCat1);
+        panelLeft.add(labelRecipeCat2);
 
         insidePanel.add(panelLeft);
-        insidePanel.add(panelRight);
+        insidePanel.add(panelImg);
         outsidePanel.add(insidePanel);
         outsidePanel.add(panelCenter);
         outsidePanel.add(panelBot);
 
+        setRecipeFrame();
         return outsidePanel;
     }
 
-    // EFFECTS: helper to create the bottom panels of the recipe frame
-    private JPanel recipeFramePanelBot() {
-        JPanel panelBot = new JPanel();
-        panelBot.setBounds(0, 300, 600, 600);
-        panelBot.setBorder(BorderFactory.createLineBorder(new Color(100, 255, 100)));
-        // somehow make it 2/3 of panel, the rest of the bottom
-
-        JLabel ingredients = new JLabel("dfjioageaugaoi");
-        JLabel steps = new JLabel(":adadadwadawda");
-
-        panelBot.add(ingredients);
-        panelBot.add(steps);
-
-        return panelBot;
-    }
-
-    // EFFECTS: helper to create the img panel of the recipe frame
-    private JPanel recipeFramePanelImg() {
-        JPanel panelImg = new JPanel();
-        ImageIcon image = null; // get hashmap img
-        //panelImg.setBounds(WIDTH, 0, ); somehow make it 1/3 of panel, to the top right
-        panelImg.setBackground(new Color(244, 0, 144)); // stub
-
-        panelImg.setVisible(true);
-        return panelImg;
+    // EFFECTS: updates the recipe frame
+    private void setRecipeFrame() {
+        labelRecipeName2.setText(recipeSelected.getRecipeName());
+        labelRecipeCat2.setText(recipeSelected.getCategory());
+        textIngredients.setText(recipeSelected.getIngredients());
+        textSteps.setText(recipeSelected.getSteps());
     }
 
     // EFFECTS: helper to create the right panel of the recipe frame
-    private JPanel recipeFramePanelLeft() {
-        JPanel panelLeft = new JPanel();
-        panelLeft.setLayout(new GridLayout());
-        panelLeft.setBorder(BorderFactory.createLineBorder(Color.CYAN));
-        panelLeft.setBounds(0, 0, 300, 300);
+    private JPanel recipeFramePanelLeft(JPanel panelLeft) {
+        panelLeft.setLayout(new GridLayout(2,2));
+        panelLeft.setBorder(BorderFactory.createLineBorder(Color.GRAY));
 
         JLabel labelRecipeName1 = new JLabel("Name: ");
-        JLabel labelRecipeName2 = new JLabel(recipeSelected.getRecipeName());
-        labelRecipeName1.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        JLabel labelRecipeName2 = new JLabel();
+        labelRecipeName2.setText(recipeSelected.getRecipeName());
 
         JLabel labelRecipeCat1 = new JLabel("Category: ");
-        JLabel labelRecipeCat2 = new JLabel(recipeSelected.getCategory());
-
-
+        JLabel labelRecipeCat2 = new JLabel();
+        labelRecipeCat2.setText(recipeSelected.getCategory());
 
         panelLeft.add(labelRecipeName1);
         panelLeft.add(labelRecipeName2);
         panelLeft.add(labelRecipeCat1);
         panelLeft.add(labelRecipeCat2);
 
-
-        System.out.println(panelLeft.getSize());
-        System.out.println(labelRecipeCat1.getSize());
         return panelLeft;
     }
 
@@ -307,7 +305,7 @@ public class RecipeMainFrame extends JFrame implements ActionListener {
 
         listRecipe.setSelectionMode(SINGLE_SELECTION);
         listRecipe.setLayoutOrientation(JList.VERTICAL);
-        listRecipe.setSelectedIndex(-1);
+        listRecipe.setSelectedIndex(0);
         listRecipe.setVisibleRowCount(-1);
         listRecipe.revalidate();
         listRecipe.repaint();
@@ -326,7 +324,7 @@ public class RecipeMainFrame extends JFrame implements ActionListener {
 
         listRecipe.setSelectionMode(SINGLE_SELECTION);
         listRecipe.setLayoutOrientation(JList.VERTICAL);
-        listRecipe.setSelectedIndex(-1);
+        listRecipe.setSelectedIndex(0);
         listRecipe.setVisibleRowCount(-1);
 
         listScrollPane.setColumnHeaderView(header);
@@ -390,6 +388,7 @@ public class RecipeMainFrame extends JFrame implements ActionListener {
         listRecipe.getSelectionModel().addListSelectionListener(r -> {
             recipeSelected = (Recipe) listRecipe.getSelectedValue();
             buttonCheck();
+            setRecipeFrame();
             if (r.getValueIsAdjusting()) {
                 r.getValueIsAdjusting(); // find a way to not have listSelectionModel invoked twice
             }
