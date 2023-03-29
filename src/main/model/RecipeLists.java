@@ -19,18 +19,7 @@ public class RecipeLists implements Writable {
         recipeListFav = rlf;
     }
 
-    public String getName() {
-        return this.name;
-    }
-
-    public RecipeList getRecipeList() {
-        return recipeListMain;
-    }
-
-    public RecipeListFav getRecipeListFav() {
-        return recipeListFav;
-    }
-
+    // EFFECTS: creates and returns a JSONObject with a name, and recipes from the Main and Fav lists
     @Override
     public JSONObject toJson() {
         JSONObject json = new JSONObject();
@@ -48,6 +37,18 @@ public class RecipeLists implements Writable {
             jsonArray.put(recipeList.atIndex(i).toJson());
         }
         return jsonArray;
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public RecipeList getRecipeList() {
+        return recipeListMain;
+    }
+
+    public RecipeListFav getRecipeListFav() {
+        return recipeListFav;
     }
 
 }

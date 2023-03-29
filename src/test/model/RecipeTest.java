@@ -11,7 +11,7 @@ public class RecipeTest {
     private Recipe testRecipe3;
 
     @BeforeEach
-    public void setup () {
+    void setup () {
         testRecipe1 = new Recipe("Pasta Primavera","Vegetarian","Pasta, Veggies",
                 "1. Boil pasta. 2. Add veggies. 3. Serve hot");
         testRecipe2 = new Recipe("Minestrone Soup","Soup","Veggies",
@@ -22,7 +22,7 @@ public class RecipeTest {
     }
 
     @Test
-    public void testConstructorRecipe1() {
+    void testConstructorRecipe1() {
         assertEquals("Pasta Primavera",testRecipe1.getRecipeName());
         assertEquals("Vegetarian",testRecipe1.getCategory());
         assertEquals("Pasta, Veggies",testRecipe1.getIngredients());
@@ -30,7 +30,7 @@ public class RecipeTest {
     }
 
     @Test
-    public void changeRecipeName() {
+    void testChangeRecipeName() {
         testRecipe1.changeRecipeName("Banana");
         testRecipe2.changeRecipeName("Minestrone Soup"); // same name
         assertEquals("Banana",testRecipe1.getRecipeName());
@@ -38,7 +38,7 @@ public class RecipeTest {
     }
 
     @Test
-    public void changeRecipeCategory() {
+    void testChangeRecipeCategory() {
         testRecipe2.changeCategory("Meat");
         testRecipe3.changeCategory("Meat"); // same
         assertEquals("Meat", testRecipe2.getCategory());
@@ -46,7 +46,7 @@ public class RecipeTest {
     }
 
     @Test
-    public void changeRecipeIngredients() {
+    void testChangeRecipeIngredients() {
         testRecipe1.changeIngredients("Rice, Soup, Wine");
         testRecipe3.changeIngredients("Ground beef, Breadcrumbs, Ketchup"); // same
         assertEquals("Rice, Soup, Wine",testRecipe1.getIngredients());
@@ -54,10 +54,17 @@ public class RecipeTest {
     }
 
     @Test
-    public void changeRecipeSteps() {
+    void testChangeRecipeSteps() {
         testRecipe2.changeSteps("Do nothing");
         testRecipe1.changeSteps("1. Boil pasta. 2. Add veggies. 3. Serve hot"); // same
         assertEquals("Do nothing", testRecipe2.getSteps());
         assertEquals("1. Boil pasta. 2. Add veggies. 3. Serve hot", testRecipe1.getSteps());
+    }
+
+    @Test
+    void testToString() {
+        assertEquals("Pasta Primavera", testRecipe1.toString());
+        assertEquals("Minestrone Soup", testRecipe2.toString());
+        assertEquals("Salisbury Steak", testRecipe3.toString());
     }
 }

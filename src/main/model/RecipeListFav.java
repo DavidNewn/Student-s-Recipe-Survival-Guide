@@ -11,6 +11,7 @@ public class RecipeListFav extends RecipeList {
         super(name);
     }
 
+    // EFFECTS: adds a recipe to the favourite list. Calls the RecipeList method addRecipe
     public void addRecipe(Recipe recipe) {
         super.addRecipe(recipe);
     }

@@ -1,9 +1,5 @@
 package model;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-import persistence.Writable;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -32,12 +28,11 @@ public class RecipeList {
     }
 
     // !!! BUG: deleting reference from main list does not delete from favs
-    // REQUIRES: the recipe list to not be empty
+    // REQUIRES: the recipe list to not be empty, assume recipe to be removed != null
     // MODIFIES: this
     // EFFECTS: removes recipe from the recipe list
     public void removeRecipe(Recipe recipe) {
         recipeList.remove(recipe);
-        System.out.println(recipe.getRecipeName() + " has been deleted from the main list");
     }
 
     // REQUIRES: the recipe list to not be empty
@@ -51,17 +46,23 @@ public class RecipeList {
         return null;
     }
 
-    public int size() {
-        return recipeList.size();
-    }
-
+    // EFFECTS: returns the recipe at index (first recipe at 0)
     public Recipe atIndex(int i) {
         return recipeList.get(i);
     }
 
     // EFFECTS: returns an unmodifiable list of recipe list
+    public List<Recipe> getRecipeList() {
+        return this.recipeList;
+    }
+
+    // EFFECTS: returns an unmodifiable list of recipe list
     public List<Recipe> getRecipeListCollection() {
         return Collections.unmodifiableList(recipeList);
+    }
+
+    public int size() {
+        return recipeList.size();
     }
 
     public String getName() {

@@ -9,7 +9,7 @@ import persistence.Writable;
  * !!! TO DO:
  * Change ingredients into either a list of string or ingredients class
  * Change steps into either a list of string or steps class
- * Maybe use a hashmap to categorise list; need id
+ * Maybe use a hashmap for ingredients
  */
 public class Recipe implements Writable {
     private String recipeName; //name of the recipe
@@ -50,21 +50,22 @@ public class Recipe implements Writable {
     }
 
     public String getRecipeName() {
-        return recipeName;
+        return this.recipeName;
     }
 
     public String getCategory() {
-        return category;
+        return this.category;
     }
 
     public String getIngredients() {
-        return ingredients;
+        return this.ingredients;
     }
 
     public String getSteps() {
-        return steps;
+        return this.steps;
     }
 
+    // EFFECTS: creates and returns a JSONObject representing a recipe with its fields
     @Override
     public JSONObject toJson() {
         JSONObject json = new JSONObject();
@@ -73,5 +74,11 @@ public class Recipe implements Writable {
         json.put("ingredients", ingredients);
         json.put("steps", steps);
         return json;
+    }
+
+    // EFFECTS: returns recipe name for RecipePanel
+    @Override
+    public String toString() {
+        return recipeName;
     }
 }

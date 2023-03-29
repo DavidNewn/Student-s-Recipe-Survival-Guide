@@ -129,10 +129,10 @@ public class RecipeApp {
             displaySearchRecipeMain();
             switch (readCommand()) {
                 case "f":
-                    addRecipeHelper(recipe);
+                    addRecipeHelper(recipe); //add to favourites
                     break outer;
                 case "r":
-                    recipeList.removeRecipe(recipe);
+                    removeRecipeHelper(recipe); //remove from main list
                     break outer;
                 case "e":
                     editRecipe(recipe);
@@ -269,6 +269,13 @@ public class RecipeApp {
     private void addRecipeHelper(Recipe recipe) {
         recipeListFav.addRecipe(recipe);
         System.out.println(recipe.getRecipeName() + " added to the favourite recipe list");
+    }
+
+    // Helper function specifically for removing recipe into main recipe list
+    // (and evade Checkstyle length until I find a better solution)
+    private void removeRecipeHelper(Recipe recipe) {
+        recipeList.removeRecipe(recipe);
+        System.out.println(recipe.getRecipeName() + " has been deleted from the main list");
     }
 
     // EFFECTS: displays the starting recipe app menu
