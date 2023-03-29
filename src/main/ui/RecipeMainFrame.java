@@ -14,6 +14,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
 
+import static java.util.Objects.isNull;
 import static javax.swing.ListSelectionModel.SINGLE_SELECTION;
 
 /**
@@ -34,8 +35,8 @@ public class RecipeMainFrame extends JFrame implements ActionListener {
     private JScrollPane listScrollPane;
     private JLabel header;
     private JInternalFrame recipeFrame = new JInternalFrame();
-    private JTextField textIngredients = new JTextField();
-    private JTextField textSteps = new JTextField();
+    private JTextArea textIngredients = new JTextArea();
+    private JTextArea textSteps = new JTextArea();
     private JLabel labelRecipeName2 = new JLabel();
     private JLabel labelRecipeCat2 = new JLabel();
     private JList listRecipe;
@@ -131,15 +132,6 @@ public class RecipeMainFrame extends JFrame implements ActionListener {
         recipeList = new RecipeList(keyRecipeListMain);
         recipeListFav = new RecipeListFav(keyRecipeListFav);
 
-        buttonTopPane.setLayout(new GridLayout(1,1));
-        buttonBotPane.setLayout(new GridLayout(2,2));
-        btnCreateRecipe = new JButton(new CreateRecipeAction());
-        btnAddToFav = new JButton(new AddRecipeToFavAction());
-        btnRemoveRecipe = new JButton(new RemoveRecipeFromMainAction());
-        btnRemoveFromFav = new JButton(new RemoveFavRecipeAction());
-        btnEditRecipe = new JButton(new EditRecipeAction());
-        btnSwitchList = new JButton(new SwitchListAction(0));
-
         listRecipe = new JList(modelMain);
         listScrollPane = new JScrollPane(listRecipe);
         createListSelectionListener(); // creates list selection listener
@@ -147,6 +139,7 @@ public class RecipeMainFrame extends JFrame implements ActionListener {
         textIngredients.setEditable(false);
         textSteps.setEditable(false);
 
+        loadButtonList();
         loadDefaultRecipeLists();
     }
 
@@ -159,6 +152,20 @@ public class RecipeMainFrame extends JFrame implements ActionListener {
         recipeList.addRecipe(recipe5); // Smoked Paprika Curry Sauce
         recipeListFav.addRecipe(recipe3); // Vichyssoise
         recipeListFav.addRecipe(recipe4); // Fried Rice
+    }
+
+    // EFFECTS: loads the button list
+    private void loadButtonList() {
+        buttonTopPane.setLayout(new GridLayout(1,1));
+        buttonBotPane.setLayout(new GridLayout(2,2));
+        btnCreateRecipe = new JButton(new CreateRecipeAction());
+        btnAddToFav = new JButton(new AddRecipeToFavAction());
+        btnRemoveRecipe = new JButton(new RemoveRecipeFromMainAction());
+        btnRemoveFromFav = new JButton(new RemoveFavRecipeAction());
+        btnEditRecipe = new JButton(new EditRecipeAction());
+        btnSwitchList = new JButton(new SwitchListAction(0));
+
+        btnSwitchList.setBackground(new Color(229, 144, 220));
     }
 
     // EFFECTS: helper that creates the menu bar. Contains the save and load options
@@ -240,20 +247,20 @@ public class RecipeMainFrame extends JFrame implements ActionListener {
         JPanel panelImg = new JPanel();
         JPanel panelCenter = new JPanel();
         JPanel panelBot = new JPanel();
-        JLabel labelRecipeName1 = new JLabel("Name: ");
-        JLabel labelRecipeCat1 = new JLabel("Category: ");
+        JScrollPane ingScrollPane = new JScrollPane(textIngredients);
+        JScrollPane stepsScrollPane = new JScrollPane(textSteps);
 
         insidePanel.setLayout(new GridLayout(1, 2));
         outsidePanel.setLayout(new GridLayout(3, 1));
-        panelLeft.setLayout(new GridLayout(2,2));
 
+        ingScrollPane.setPreferredSize(new Dimension(500,300));
+        stepsScrollPane.setPreferredSize(new Dimension(500,400));
+        textSteps.setLineWrap(true);
+        textIngredients.setLineWrap(true);
+        panelCenter.add(ingScrollPane);
+        panelBot.add(stepsScrollPane);
         panelImg.setBackground(new Color(244, 0, 144)); // stub
-        panelCenter.add(textIngredients);
-        panelBot.add(textSteps);
-        panelLeft.add(labelRecipeName1);
-        panelLeft.add(labelRecipeName2);
-        panelLeft.add(labelRecipeCat1);
-        panelLeft.add(labelRecipeCat2);
+        createPanelLeft(panelLeft);
 
         insidePanel.add(panelLeft);
         insidePanel.add(panelImg);
@@ -265,33 +272,28 @@ public class RecipeMainFrame extends JFrame implements ActionListener {
         return outsidePanel;
     }
 
-    // EFFECTS: updates the recipe frame
-    private void setRecipeFrame() {
-        labelRecipeName2.setText(recipeSelected.getRecipeName());
-        labelRecipeCat2.setText(recipeSelected.getCategory());
-        textIngredients.setText(recipeSelected.getIngredients());
-        textSteps.setText(recipeSelected.getSteps());
-    }
-
-    // EFFECTS: helper to create the right panel of the recipe frame
-    private JPanel recipeFramePanelLeft(JPanel panelLeft) {
-        panelLeft.setLayout(new GridLayout(2,2));
-        panelLeft.setBorder(BorderFactory.createLineBorder(Color.GRAY));
-
+    // EFFECTS: creates the leftmost top panel, containing the name and category of the recipe
+    private void createPanelLeft(JPanel panelLeft) {
         JLabel labelRecipeName1 = new JLabel("Name: ");
-        JLabel labelRecipeName2 = new JLabel();
-        labelRecipeName2.setText(recipeSelected.getRecipeName());
-
         JLabel labelRecipeCat1 = new JLabel("Category: ");
-        JLabel labelRecipeCat2 = new JLabel();
-        labelRecipeCat2.setText(recipeSelected.getCategory());
-
         panelLeft.add(labelRecipeName1);
         panelLeft.add(labelRecipeName2);
         panelLeft.add(labelRecipeCat1);
         panelLeft.add(labelRecipeCat2);
+        panelLeft.setLayout(new GridLayout(2,2));
 
-        return panelLeft;
+        labelRecipeName1.setHorizontalAlignment(SwingConstants.RIGHT);
+        labelRecipeCat1.setHorizontalAlignment(SwingConstants.RIGHT);
+    }
+
+    // EFFECTS: updates the recipe frame. Called by list listener to update on selection of a recipe
+    private void setRecipeFrame() {
+        if (!isNull(recipeSelected)) {
+            labelRecipeName2.setText(recipeSelected.getRecipeName());
+            labelRecipeCat2.setText(recipeSelected.getCategory());
+            textIngredients.setText(recipeSelected.getIngredients());
+            textSteps.setText(recipeSelected.getSteps());
+        }
     }
 
     // EFFECTS: creates a JList displaying the main list of recipes
@@ -435,8 +437,10 @@ public class RecipeMainFrame extends JFrame implements ActionListener {
     private class CreateRecipeAction extends AbstractAction {
         JTextField textName = new JTextField();
         JTextField textCat = new JTextField();
-        JTextField textIng = new JTextField();
-        JTextField textSteps = new JTextField();
+        JTextArea textIng = new JTextArea();
+        JTextArea textSteps = new JTextArea();
+        JScrollPane ingScrollPane = new JScrollPane(textIng);
+        JScrollPane stepsScrollPane = new JScrollPane(textSteps);
 
         private CreateRecipeAction() {
             super("Create New Recipe");
@@ -466,10 +470,17 @@ public class RecipeMainFrame extends JFrame implements ActionListener {
             Object[] inputFields =
                     {"Name", textName,
                             "Category", textCat,
-                            "Ingredients", textIng,
-                            "Steps:", textSteps};
-            textIng.setPreferredSize(new Dimension(300,200));
-            textSteps.setPreferredSize(new Dimension(500,300));
+                            "Ingredients", ingScrollPane,
+                            "Steps:", stepsScrollPane};
+            ingScrollPane.setVerticalScrollBarPolicy(
+                    JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+            ingScrollPane.setPreferredSize(new Dimension(400, 200));
+
+            stepsScrollPane.setVerticalScrollBarPolicy(
+                    JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+            stepsScrollPane.setPreferredSize(new Dimension(400, 300));
+            textIng.setLineWrap(true);
+            textSteps.setLineWrap(true);
             return inputFields;
         }
     }
@@ -563,23 +574,63 @@ public class RecipeMainFrame extends JFrame implements ActionListener {
      * Can be done from either main or favourite list
      */
     public class EditRecipeAction extends AbstractAction {
+        JTextField textName = new JTextField();
+        JTextField textCat = new JTextField();
+        JTextArea textIng = new JTextArea();
+        JTextArea textSteps = new JTextArea();
+
+        JScrollPane ingScrollPane = new JScrollPane(textIng);
+        JScrollPane stepsScrollPane = new JScrollPane(textSteps);
 
         private EditRecipeAction() {
-            super("Edit recipe");
+            super("Edit Recipe");
         }
 
+        // EFFECTS: creates a new optionPane and requests for user input to create a new Recipe object
+        // then adds it to the main recipe list and the JList
         @Override
         public void actionPerformed(ActionEvent evt) {
-            try {
-                recipeSelected.changeRecipeName("LOL");
+            Object[] inputFields = setupInputFields();
+            int option = JOptionPane.showConfirmDialog(null, inputFields, "Editing Process",
+                    JOptionPane.OK_CANCEL_OPTION);
+
+            if (option == 0 && textName.getText() != null && !textName.getText().trim().isEmpty()) {
+                recipeSelected.changeRecipeName(textName.getText());
+                recipeSelected.changeCategory(textCat.getText());
+                recipeSelected.changeIngredients(textIng.getText());
+                recipeSelected.changeSteps(textSteps.getText());
+            } else {
                 JOptionPane.showMessageDialog(null,
-                        "Changed recipe name",
-                        "Edited recipe!", JOptionPane.PLAIN_MESSAGE);
-            } catch (NullPointerException e) {
-                JOptionPane.showMessageDialog(null,
-                        "Can't edit nothing!",
-                        "No Recipe Selected", JOptionPane.ERROR_MESSAGE);
+                        "Cancelled editing this recipe",
+                        "", JOptionPane.PLAIN_MESSAGE);
             }
+        }
+
+        private Object[] setupInputFields() {
+            initializeFields();
+            Object[] inputFields =
+                    {"Name", textName,
+                     "Category", textCat,
+                     "Ingredients", ingScrollPane,
+                     "Steps:", stepsScrollPane};
+            ingScrollPane.setVerticalScrollBarPolicy(
+                    JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+            ingScrollPane.setPreferredSize(new Dimension(400, 200));
+
+            stepsScrollPane.setVerticalScrollBarPolicy(
+                    JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+            stepsScrollPane.setPreferredSize(new Dimension(400, 300));
+
+            textIng.setLineWrap(true);
+            textSteps.setLineWrap(true);
+            return inputFields;
+        }
+
+        private void initializeFields() {
+            textName.setText(recipeSelected.getRecipeName());
+            textCat.setText(recipeSelected.getCategory());
+            textIng.setText(recipeSelected.getIngredients());
+            textSteps.setText(recipeSelected.getSteps());
         }
     }
 
