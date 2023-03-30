@@ -4,13 +4,13 @@ import org.json.JSONObject;
 import persistence.Writable;
 
 /**
- * The Recipe claas, representing a recipe with a name, category, ingredients, and steps.
- *
- * !!! TO DO:
- * Change ingredients into either a list of string or ingredients class
- * Change steps into either a list of string or steps class
- * Maybe use a hashmap for ingredients
+ * The Recipe class, representing a recipe with a name, category, ingredients, and steps.
  */
+
+// TODO:
+//  Change ingredients into either a list of string or ingredients class
+//  Change steps into either a list of string or steps class
+//  Maybe use a hashmap for ingredients
 public class Recipe implements Writable {
     private String recipeName; //name of the recipe
     private String category;   //category of the recipe e.g. vegetarian, vegan, seafood

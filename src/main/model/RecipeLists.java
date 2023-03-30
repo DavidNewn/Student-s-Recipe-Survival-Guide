@@ -12,14 +12,14 @@ public class RecipeLists implements Writable {
     private RecipeList recipeListMain; // name: "Main Recipes"
     private RecipeListFav recipeListFav; // name: "Favourite Recipes"
 
-    // EFFECTS: constructs an object with the main recipe list and favourite recipe list
+    // EFFECTS: creates the object holding both the main recipe list and favourite recipe list
     public RecipeLists(String name, RecipeList rl, RecipeListFav rlf) {
         this.name = name;
         recipeListMain = rl;
         recipeListFav = rlf;
     }
 
-    // EFFECTS: creates and returns a JSONObject with a name, and recipes from the Main and Fav lists
+    // EFFECTS: returns a JSONObject with a name, and recipes from the Main and Fav lists
     @Override
     public JSONObject toJson() {
         JSONObject json = new JSONObject();

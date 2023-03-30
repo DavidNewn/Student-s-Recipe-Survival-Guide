@@ -1,8 +1,7 @@
 package model;
 
 /**
- * The favourite list of recipes. Related to main list, so changes to recipes themselves should be reflected in the
- * favourite list
+ * The favourite list of recipes. Related to main list, so changes to a recipe should be reflected in both lists
  */
 public class RecipeListFav extends RecipeList {
 

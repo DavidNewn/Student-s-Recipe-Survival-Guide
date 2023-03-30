@@ -11,15 +11,21 @@
             "ingredients": "Rice, Leftover Veggies or Meats",
             "category": "Rice",
             "steps": "1. Add rice in a pan with some oil. Fry for a bit. 2. Add in leftovers. 3. Serve hot"
+        },
+        {
+            "name": "Pasta Alla Norcina",
+            "ingredients": "Pasta, Fatty Meat, Garlic, Cream",
+            "category": "Pasta",
+            "steps": "1. Boil pasta. 2. Fry meats with chopped garlic. Add in heavy cream and let sauce simmer.3. Add pasta into sauce. Serve hot"
         }
     ],
     "name": "Recipe Lists",
     "Main Recipes": [
         {
-            "name": "Pasta Primavera",
-            "ingredients": "Pasta, Veggies",
-            "category": "Vegetarian",
-            "steps": "1. Boil pasta. 2. Add veggies. 3. Serve hot"
+            "name": "Pasta Alla Norcina",
+            "ingredients": "Pasta, Fatty Meat, Garlic, Cream",
+            "category": "Pasta",
+            "steps": "1. Boil pasta. 2. Fry meats with chopped garlic. Add in heavy cream and let sauce simmer.3. Add pasta into sauce. Serve hot"
         },
         {
             "name": "Minestrone Soup",

@@ -15,17 +15,17 @@ import java.util.stream.Stream;
 
 /**
  * Represents a reader that reads a recipe and favourite recipe list from JSON data stored in file
- * Template from workroom example
+ * Template from workroom example (Phase 2)
  */
 public class JsonReader {
     private String source;
 
-    // EFFECTS: constructs reader to read JSON data, with the key for Recipe Lists
+    // EFFECTS: constructs reader to read JSON data, with key from RecipeLists
     public JsonReader(String source) {
         this.source = source;
     }
 
-    // EFFECTS: reads RecipeLists (main and favourite list) from file and returns it
+    // EFFECTS: reads RecipeLists (holds main and favourite list) from file and returns it
     // throws IOException if an error occurs reading data from file
     public RecipeLists read(String keyRecipeLists, String keyRecipeMain, String keyRecipeFav) throws IOException {
         String jsonData = readFile(source);
@@ -46,9 +46,9 @@ public class JsonReader {
 
     // EFFECTS: parses RecipeLists (main and favourite list) from JSON object and returns it
     // Notes to self:
-    // Recipe Lists / jsonObject name: "Recipe Lists"
-    // Main recipe list name: "Main Recipes"
-    // Favourite recipe list name: "Favourite Recipes"
+    // - Recipe Lists / jsonObject name: "Recipe Lists"
+    // - Main recipe list name: "Main Recipes"
+    // - Favourite recipe list name: "Favourite Recipes"
     private RecipeLists parseRecipeList(JSONObject jsonObject, String keyRecipeLists,
                                         String keyRecipeMain, String keyRecipeFav) {
         RecipeList rl = new RecipeList(keyRecipeMain);

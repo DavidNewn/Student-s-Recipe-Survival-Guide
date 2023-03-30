@@ -28,7 +28,7 @@ public class RecipeApp {
     private JsonReader jsonReader;
     private Scanner input;
 
-    // Set names of keys for recipe lists
+    // Set names of keys for recipe lists for saving and loading
     private final String keyRecipeLists = "Recipe Lists";
     private final String keyRecipeListMain = "Main Recipes";
     private final String keyRecipeListFav = "Favourite Recipes";

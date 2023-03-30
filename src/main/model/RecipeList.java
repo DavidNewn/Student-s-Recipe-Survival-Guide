@@ -7,22 +7,23 @@ import java.util.List;
 /**
  * The main list of recipes. Users can add, remove, and search for recipes in this list.
  */
+
+// TODO:
+//  CHANGE: only allow one reference of the same recipe name in either list.
+//  Warn users of this and give option to change name
 public class RecipeList {
     private String name;
     private ArrayList<Recipe> recipeList;
 
-    // EFFECTS: creates the main recipe list
+    // EFFECTS: creates the main recipe list with a name and an arrayList
     public RecipeList(String name) {
         this.name = name;
         recipeList = new ArrayList<>();
     }
 
-    // !!! CHANGE: only allow one reference of the same name in either list.
-    // !!! Warn users of this and give option to change name
     // REQUIRES: assume that the recipe list doesn't already contain the same recipe
     // MODIFIES: this
     // EFFECTS: adds recipe into the recipe list
-
     public void addRecipe(Recipe recipe) {
         recipeList.add(recipe);
     }
@@ -51,16 +52,17 @@ public class RecipeList {
         return recipeList.get(i);
     }
 
-    // EFFECTS: returns an unmodifiable list of recipe list
+    // EFFECTS: returns a modifiable list of recipe list
     public List<Recipe> getRecipeList() {
         return this.recipeList;
     }
 
-    // EFFECTS: returns an unmodifiable list of recipe list
+    // EFFECTS: returns an unmodifiable list of recipe list. Mainly for JSONWriter to save to JSON file
     public List<Recipe> getRecipeListCollection() {
         return Collections.unmodifiableList(recipeList);
     }
 
+    // EFFECTS: returns size of the recipe list
     public int size() {
         return recipeList.size();
     }
