@@ -77,4 +77,12 @@ public class RecipeListTest {
         assertEquals("Pasta Primavera", recipe1.getRecipeName());
         assertEquals("Minestrone Soup", recipe2.getRecipeName());
     }
+
+    @Test
+    public void testGetRecipeList() {
+        assertEquals(0, recipeListTest.getRecipeList().size());
+        recipeListTest.addRecipe(testRecipe2);
+        assertEquals(1, recipeListTest.getRecipeList().size());
+
+    }
 }
