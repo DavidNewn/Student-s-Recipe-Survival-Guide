@@ -1,15 +1,11 @@
 package ui;
 
-import model.Recipe;
-import model.RecipeList;
-import model.RecipeListFav;
-import model.RecipeLists;
+import model.*;
 import persistence.JsonReader;
 import persistence.JsonWriter;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
@@ -17,12 +13,13 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Iterator;
 
 import static java.util.Objects.isNull;
 import static javax.swing.ListSelectionModel.SINGLE_SELECTION;
 
 // TODO:
-//  1. Complete (proper) image implementation
+//  1. To complete proper image implementation. Bugs with loading due to lack of it (recipe app still works though).
 //  2. Add and edit text labels
 //  3. Make overall program run faster. Better abstraction. Utilize design patterns.
 //  4. Make GUI look pretty
@@ -38,6 +35,7 @@ public class RecipeMainFrame extends JFrame implements ActionListener {
     //private BufferedImage recipeImg; // for implementing image adding feature
     private JsonWriter jsonWriter;
     private JsonReader jsonReader;
+    private EventLog eventlog = EventLog.getInstance();
 
     // JSwing Components and constants
     private static final int WIDTH = 900;
@@ -61,7 +59,7 @@ public class RecipeMainFrame extends JFrame implements ActionListener {
     private JButton btnRemoveFromFav;
     private JButton btnEditRecipe;
     private JButton btnSwitchList;
-    private JButton btnFileChooser;
+    private JButton btnAddImg;
     private JMenuItem saveMenu;
     private JMenuItem loadMenu;
 
@@ -71,7 +69,7 @@ public class RecipeMainFrame extends JFrame implements ActionListener {
     private final String keyRecipeListFav = "Favourite Recipes";
 
     // Default Image (tobs.jpg)
-    private Image defaultTobs; // it's Tobs
+    private BufferedImage defaultTobs; // it's Tobs
 
     // Default recipes. Maybe move to elsewhere, like its own class?
     protected Recipe recipe1 = new Recipe("Pasta Alla Norcina", "Pasta",
@@ -204,7 +202,7 @@ public class RecipeMainFrame extends JFrame implements ActionListener {
         btnRemoveFromFav = new JButton(new RemoveFavRecipeAction());
         btnEditRecipe = new JButton(new EditRecipeAction());
         btnSwitchList = new JButton(new SwitchListAction(0));
-        btnFileChooser = new JButton(new CreateBtnFileChooser());
+        btnAddImg = new JButton(new AddImageBtn());
 
         btnSwitchList.setBackground(new Color(229, 144, 220));
     }
@@ -259,7 +257,7 @@ public class RecipeMainFrame extends JFrame implements ActionListener {
     // EFFECTS: adds the buttons to the top panel. Does not change.
     public void topButtonPanels() {
         buttonTopPane.add(btnCreateRecipe);
-        // !!! add a search bar in later updates
+        // TODO: add a search bar in later updates
         buttonTopPane.updateUI();
     }
 
@@ -334,7 +332,6 @@ public class RecipeMainFrame extends JFrame implements ActionListener {
 
     // EFFECTS: creates the image panel
     private void createPanelImg(JPanel panelImg) {
-        // !!! set so image scales to panel
         panelImg.add(labelRecipeImage);
     }
 
@@ -355,15 +352,46 @@ public class RecipeMainFrame extends JFrame implements ActionListener {
     // MODIFIES: this
     // EFFECTS: sets the recipe frame. Called by list listener on selection of a recipe in the list
     private void setRecipeFrame() {
+        // !!! maybe not have isNull for recipeSelected??
+        // !!! possibly have an empty frame when no recipe is selected...
         if (!isNull(recipeSelected)) {
             labelRecipeName2.setText(recipeSelected.getRecipeName());
             labelRecipeCat2.setText(recipeSelected.getCategory());
             textIngredients.setText(recipeSelected.getIngredients());
             textSteps.setText(recipeSelected.getSteps());
-            ImageIcon icon = new ImageIcon(recipeImgMap.get(recipeSelected));
-            labelRecipeImage.setIcon(icon);
-            labelRecipeImage.setPreferredSize(new Dimension(300,300));
+            labelRecipeImage.setIcon(findRecipeImage(recipeSelected));
         }
+    }
+
+    // EFFECTS: returns the ImageIcon of the selected recipe if it exists, else returns Tobs
+    // !!! BUG: after saving and loading, recipes in the map will not be in sync with that from the recipe lists
+    //          i.e. different hashcodes. Likely an issue when loading, not overriding equals and hashcode
+    //          Regardless, the catch statement will be called.
+    private ImageIcon findRecipeImage(Recipe recipeSelected) {
+        Image getImage;
+        try {
+            getImage = recipeImgMap.get(recipeSelected).getScaledInstance(400,250, Image.SCALE_DEFAULT);
+            return new ImageIcon(getImage);
+        } catch (NullPointerException e) {
+            getImage = defaultTobs.getScaledInstance(400,250, Image.SCALE_DEFAULT);
+            return new ImageIcon(getImage);
+        }
+    }
+
+    // !!! stub for proper image setting function, paired with saving hashmap to json
+    // EFFECTS: sets recipes not already in the recipeImgMap to have the defaultTobs image
+    //          this would apply for all new recipes created by the user
+    // BUG: because of loading bug, recipes will not be in sync with list after loading
+    private void setRecipeImageToTobs(Recipe recipeSelected) {
+        if (!recipeImgMap.containsKey(recipeSelected)) {
+            recipeImgMap.put(recipeSelected,defaultTobs);
+        }
+    }
+
+    // EFFECTS: removes the selected recipe from the img map
+    // BUG: because of loading bug, recipes within the map will not be removed after loading
+    private void removeRecipeFromMap(Recipe recipeSelected) {
+        recipeImgMap.remove(recipeSelected);
     }
 
     // MODIFIES: this
@@ -406,6 +434,7 @@ public class RecipeMainFrame extends JFrame implements ActionListener {
         listRecipe.repaint();
     }
 
+    /*
     // EFFECTS: assigns image with the recipe in the map
     private void updateRecipeImageMap() {
         // !!! sTUB TO check img. Currently gives dialog of unremovable tobs!
@@ -418,6 +447,7 @@ public class RecipeMainFrame extends JFrame implements ActionListener {
             dialog.setVisible(true);
         }
     }
+    */
 
     // EFFECTS: saves the current state of the recipe app to JSON file
     private void saveRecipe() {
@@ -426,7 +456,7 @@ public class RecipeMainFrame extends JFrame implements ActionListener {
         try {
             jsonWriter.open();
             jsonWriter.write(recipeLists);
-            // !!! write hashmap to new json file (to not break command line)
+            // TODO: write hashmap to new json file (to not break command line)
             jsonWriter.close();
             JOptionPane.showMessageDialog(null,
                     "Saved main and favourite recipes to " + JSON_STORE,
@@ -439,13 +469,16 @@ public class RecipeMainFrame extends JFrame implements ActionListener {
         }
     }
 
+    // !!! Bug: Loading edited file, then swapping between favourites and main recipe list does not correctly
+    //          load main recipe list
     // EFFECTS: loads previously saved recipe configuration from file
     private void loadRecipe() {
         RecipeLists recipeLists;
-
         try {
             recipeLists = jsonReader.read(keyRecipeLists, keyRecipeListMain, keyRecipeListFav);
             // !!! load separate json file representing images
+
+            System.out.println(recipeSelected);
             recipeList = recipeLists.getRecipeList();
             recipeListFav = recipeLists.getRecipeListFav();
 
@@ -477,13 +510,12 @@ public class RecipeMainFrame extends JFrame implements ActionListener {
         //Adds event listener to update with selection of recipe. Uses lambda expression
         listRecipe.getSelectionModel().addListSelectionListener(r -> {
             recipeSelected = (Recipe) listRecipe.getSelectedValue();
-            buttonCheck();
-            setRecipeFrame();
-            if (r.getValueIsAdjusting()) {
-                r.getValueIsAdjusting();
+            buttonCheck(); // updates buttons
+            setRecipeFrame(); // updates the right frame detailing the selected recipe
+            // if (r.getValueIsAdjusting()) {
                 // !!! find a way to have listSelectionModel invoked only once
                 // i.e when recipe is clicked on the list, listener does not return both true and false booleans
-            }
+            // }
         });
     }
 
@@ -506,12 +538,23 @@ public class RecipeMainFrame extends JFrame implements ActionListener {
                         JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null,
                         objButtons, objButtons[1]);
                 if (promptResult == 0) {
+                    getRecipeLog();
+                    eventlog.clear();
                     System.exit(0); // fully exit app
                 }
             }
         };
     }
 
+    // EFFECTS:
+    private void getRecipeLog() {
+        Iterator recipeLogIterator = eventlog.iterator();
+        while (recipeLogIterator.hasNext()) {
+            System.out.println(recipeLogIterator.next());
+        }
+    }
+
+    /*
     // !!! stub for now
     // EFFECTS: creates the file chooser for selecting valid images formats
     private JFileChooser createFileImageChooser() {
@@ -521,13 +564,14 @@ public class RecipeMainFrame extends JFrame implements ActionListener {
                 "Image Files", "jpg", "png", "tif"));
         return fc;
     }
-
+     */
 
     /**
-     * List of buttons and actions:
-     * From Main: Create new recipe (add to main), Add to fav, Remove from main, Edit recipe, switch lists
+     * List of buttons and actions :
+     * From Main: Create new recipe (add to main), Add to fav, Remove from main, Edit recipe, Switch lists
      * From Fav: Remove from fav, edit recipe, switch lists
-     * 6 buttons total
+     * From Create and Edit Menu: Add Image (not fully implemented)
+     * 7 buttons total
      */
 
     /**
@@ -561,6 +605,10 @@ public class RecipeMainFrame extends JFrame implements ActionListener {
                         textIng.getText(), textSteps.getText());
                 recipeList.addRecipe(newRecipe);
                 modelMain.addElement(newRecipe);
+                setRecipeImageToTobs(newRecipe);
+                JOptionPane.showMessageDialog(null,
+                        "Added [" + newRecipe.getRecipeName() + "] to the main list!",
+                        "", JOptionPane.PLAIN_MESSAGE);
             } else {
                 JOptionPane.showMessageDialog(null,
                         "Cancelled creating new recipe",
@@ -571,7 +619,7 @@ public class RecipeMainFrame extends JFrame implements ActionListener {
         // EFFECTS: initializes the input fields for the option pane
         private Object[] setupInputFields() {
             Object[] inputFields =
-                    {"Add Image: ", btnFileChooser,
+                    {"Add Image: ", btnAddImg,
                             "Name: ", textName,
                             "Category: ", textCat,
                             "Ingredients: ", ingScrollPane,
@@ -631,11 +679,13 @@ public class RecipeMainFrame extends JFrame implements ActionListener {
         // EFFECTS: removes selected recipe from the main list
         //          else displays error popup
         // BUG: displays error popup anyways cause of list listener invoking twice
+        //      as a result, also have to call removeRecipeFromMap before removeRecipe() for now.
         @Override
         public void actionPerformed(ActionEvent evt) {
             int index = listRecipe.getSelectedIndex();
 
             try {
+                removeRecipeFromMap(recipeSelected);
                 recipeList.removeRecipe(recipeSelected);
                 modelMain.removeElementAt(index);
                 JOptionPane.showMessageDialog(null,
@@ -650,6 +700,7 @@ public class RecipeMainFrame extends JFrame implements ActionListener {
             }
         }
     }
+
 
     /**
      * Represents action to be taken when user wants to remove a recipe from the fav list
@@ -670,7 +721,6 @@ public class RecipeMainFrame extends JFrame implements ActionListener {
 
             try {
                 recipeListFav.removeRecipe(recipeSelected);
-                recipeSelected = null;
                 modelFav.removeElementAt(index);
                 JOptionPane.showMessageDialog(null,
                         "Removed " + recipeSelected.getRecipeName() + " from the favourite list",
@@ -679,6 +729,8 @@ public class RecipeMainFrame extends JFrame implements ActionListener {
                 JOptionPane.showMessageDialog(null,
                         "Can't remove nothing!",
                         "No Recipe Selected", JOptionPane.ERROR_MESSAGE);
+            } finally {
+                recipeSelected = null;
             }
         }
     }
@@ -704,7 +756,7 @@ public class RecipeMainFrame extends JFrame implements ActionListener {
         // EFFECTS: creates a optionPane and requests for user input to create edit the selected recipe
         //          then updates it in the JLIST
         // BUG: displays error popup anyways cause of list listener invoking twice
-        // BUG: update from edit is not immediate
+        // BUG: update from edit is not immediate; must switch between list before update registers
         @Override
         public void actionPerformed(ActionEvent evt) {
             try {
@@ -717,6 +769,13 @@ public class RecipeMainFrame extends JFrame implements ActionListener {
                     recipeSelected.changeCategory(textCat.getText());
                     recipeSelected.changeIngredients(textIng.getText());
                     recipeSelected.changeSteps(textSteps.getText());
+                    JOptionPane.showMessageDialog(null,
+                            "Recipe edited!",
+                            "Edit Success", JOptionPane.PLAIN_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(null,
+                            "Cancelled editing this recipe",
+                            "", JOptionPane.PLAIN_MESSAGE);
                 }
             } catch (NullPointerException e) {
                 JOptionPane.showMessageDialog(null,
@@ -729,7 +788,7 @@ public class RecipeMainFrame extends JFrame implements ActionListener {
         private Object[] setupInputFields() {
             initializeFields();
             Object[] inputFields =
-                    {"Add image:", btnFileChooser,
+                    {"Add image:", btnAddImg,
                      "Name:", textName,
                      "Category:", textCat,
                      "Ingredients:", ingScrollPane,
@@ -769,11 +828,13 @@ public class RecipeMainFrame extends JFrame implements ActionListener {
             this.state = state;
         }
 
+        // !!! BUG: loading and switching between favourite and main list breaks switching options
         // MODIFIES: this
         // EFFECTS: switches between the favourite and main list on button click
         @Override
         public void actionPerformed(ActionEvent e) {
             if (state == 0) {
+                System.out.println(modelMain);
                 modelMain.removeAllElements();
                 favList();
                 favButtonPanels();
@@ -792,10 +853,10 @@ public class RecipeMainFrame extends JFrame implements ActionListener {
      * the edit or create recipe dialogue boxes
      * !!! In development
      */
-    public class CreateBtnFileChooser extends AbstractAction {
-        //File recipeFile;
+    public class AddImageBtn extends AbstractAction {
+        //File recipeFile; to have users be able to select from file
 
-        private CreateBtnFileChooser() {
+        private AddImageBtn() {
             super("Add Image File?");
         }
 
@@ -804,11 +865,8 @@ public class RecipeMainFrame extends JFrame implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent evt) {
             JOptionPane.showMessageDialog(null,
-                    "I haven't properly implemented this feature yet. \n "
-                            + "But you can click OK for an unremovable Tobs!",
-                    "Tobs Time", JOptionPane.PLAIN_MESSAGE);
-
-            updateRecipeImageMap();
+                    "I haven't properly implemented this feature yet. \n",
+                    "Sorry", JOptionPane.PLAIN_MESSAGE);
 //            final JFileChooser fc = createFileImageChooser();
 //            int returnVal = fc.showOpenDialog(null);
 //

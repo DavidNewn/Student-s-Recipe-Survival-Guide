@@ -14,6 +14,7 @@ import java.util.List;
 public class RecipeList {
     private String name;
     private ArrayList<Recipe> recipeList;
+    private EventLog log = EventLog.getInstance();
 
     // EFFECTS: creates the main recipe list with a name and an arrayList
     public RecipeList(String name) {
@@ -26,6 +27,7 @@ public class RecipeList {
     // EFFECTS: adds recipe into the recipe list
     public void addRecipe(Recipe recipe) {
         recipeList.add(recipe);
+        log.logEvent(new Event("Added \"" + recipe.getRecipeName() + "\" into the main list!"));
     }
 
     // !!! BUG: deleting reference from main list does not delete from favs
@@ -34,6 +36,7 @@ public class RecipeList {
     // EFFECTS: removes recipe from the recipe list
     public void removeRecipe(Recipe recipe) {
         recipeList.remove(recipe);
+        log.logEvent(new Event("Removed \"" + recipe.getRecipeName() + "\" from the main list!"));
     }
 
     // REQUIRES: the recipe list to not be empty

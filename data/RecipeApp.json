@@ -13,10 +13,10 @@
             "steps": "1. Add rice in a pan with some oil. Fry for a bit. 2. Add in leftovers. 3. Serve hot"
         },
         {
-            "name": "Pasta Alla Norcina",
-            "ingredients": "Pasta, Fatty Meat, Garlic, Cream",
-            "category": "Pasta",
-            "steps": "1. Boil pasta. 2. Fry meats with chopped garlic. Add in heavy cream and let sauce simmer.3. Add pasta into sauce. Serve hot"
+            "name": "recipe 2",
+            "ingredients": "",
+            "category": "a",
+            "steps": ""
         }
     ],
     "name": "Recipe Lists",
@@ -50,6 +50,24 @@
             "ingredients": "Butter, Onions, Paprika, Tomato Paste, Heavy Cream",
             "category": "Sauce",
             "steps": "1. Combine chopped with melted butter in a pot. Fry onions until they're soft 2.Add in water, let it boil and reduce to half. 3. Turn off heat and add in tomato paste.4. Add in heavy cream and heat it up to temperature. Mix well."
+        },
+        {
+            "name": "recipe 1",
+            "ingredients": "",
+            "category": "a",
+            "steps": ""
+        },
+        {
+            "name": "recipe 2",
+            "ingredients": "",
+            "category": "a",
+            "steps": ""
+        },
+        {
+            "name": "mmv",
+            "ingredients": "vvvmb",
+            "category": "mvmvm",
+            "steps": "aADA"
         }
     ]
 }

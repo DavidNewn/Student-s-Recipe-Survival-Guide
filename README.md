@@ -3,26 +3,60 @@
 ## _A recipe manager application for students_
 
 ***
+
 ## Instructions for Grader
+- First required action related to adding Xs to a Y:
+To create a new recipe, simply press the "Create New Recipe" button on the top left. A new window will popup where you
+can fill in the details of your new recipe. Click "OK" to create the recipe adding the new recipe to the main list,
+or click "Cancel" or leave the recipe name blank to cancel creating the new recipe.
 
-### ...
-TBD
-- how to generate the first of the two required actions that are related to the required user story
-"add multiple Xs to a Y" (e.g., click the button labelled "Add an X", or select the menu item labelled 
-"Add an X", or type <ctrl>+N on the keyboard to add an X,...)
--how to generate the second of the two required actions
--where to find the visual component that was added to your project (e.g., background image, image added to button)
--how does the user save the state of the application to file
--how does the user load the state of the application from file
+To add an existing recipe to the favourite list, press the "Favourite this Recipe" button on the bottom button panel.
+This will add the recipe into the favourite list. 
+Press the magenta "Switch List" button to switch between the favourite and main list.
 
-// NOTE: DO ALL OF THESE
-- You can generate the first required action related to adding Xs to a Y by...
-- You can generate the second required action related to adding Xs to a Y by...
-- You can locate my visual component by...
-- You can save the state of my application by...
-- You can reload the state of my application by...
+- Second required action related to adding Xs to a Y:
+An existing recipe in the list can be edited. Click on the recipe in the list and press "Edit Recipe" on the
+bottom button panels and a new window will pop-up. Type in whatever you wish and click "OK" to apply new changes to
+the recipe. If you click "Cancel" or leave the recipe name null, the edit process will cancel.
 
-###
+- Remove action:
+To remove a recipe from the favourite list, first switch to the favourite list, then click on the recipe on the list
+and press "Remove fav" on the bottom button panel. This will remove the recipe from the favourite list.
+To remove a recipe from the main list, first switch to the main list, then click "Remove from main" on
+the bottom button panel. This will remove the recipe from the main list. 
+
+Though do note I have not properly implemented my intended remove feature where removing a recipe from the main list 
+will also remove it from the favourite list if it's present. However, removing recipes still works.
+
+- Visual component:
+Visual components are the images of the recipe, located on the top right panel. 
+If the recipe does not have an image associated with it, Tobs will be assigned to it.
+
+Unfortunately for now there is no adding image option.
+
+- Saving the state of application:
+To save your current recipe config, press the save option in the menu bar or hit Ctrl+S.
+
+- Reloading the state of application:
+To load your previously saved recipe config, press the load option in the menu bar or hit Ctrl+L. 
+
+Note, there is currently a bug in loading as I have not fully implemented saving recipe images for the application, 
+where the default recipes will no longer display their associated images from the map but instead Tobs. 
+Regardless, the program should still keep running.
+
+### Phase 4: Task 3
+If I had more time, I would:
+
+- Create an abstract class or interface describing the general behaviour of recipe lists, so that it'll be easier 
+to add other kinds of recipe lists such as a specific category of food and other things.
+- Implemented an appropriate design pattern such as the Composite pattern to improve interacting with recipes and the
+recipe lists, as well as to improve cohesion and reduce coupling.
+
+Also, I would like to properly implement an image adding and saving feature where a user can add their own images from 
+a file chooser, and then have that chosen image saved to that recipe via a map. To do so I will need to also
+save the map into a JSON file, which required time that I currently do not have. So for now there's a bug in the app
+where upon loading the previous app state the images for the default recipes will no longer properly show.
+
 
 ***
 
