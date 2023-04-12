@@ -1,38 +1,38 @@
 package model;
 
+import java.util.Calendar;
+import java.util.Date;
+
 
 /**
- * Represents a recipe application event
- * Copied from AlarmSystem
+ * Represents an alarm system event.
  */
 public class Event {
     private static final int HASH_CONSTANT = 13;
+    private Date dateLogged;
     private String description;
-    private static int num = 1;
 
     /**
      * Creates an event with the given description
-     * and the current number of the event
-     *
-     * @param description a description of the event
+     * and the current date/time stamp.
+     * @param description  a description of the event
      */
     public Event(String description) {
+        dateLogged = Calendar.getInstance().getTime();
         this.description = description;
     }
 
     /**
-     * Gets the number of the event (starts at 1)
-     *
-     * @return the number of the event
+     * Gets the date of this event (includes time).
+     * @return  the date of the event
      */
-    public int getNum() {
-        return num;
+    public Date getDate() {
+        return dateLogged;
     }
 
     /**
      * Gets the description of this event.
-     *
-     * @return the description of the event
+     * @return  the description of the event
      */
     public String getDescription() {
         return description;
@@ -48,19 +48,17 @@ public class Event {
         }
         Event otherEvent = (Event) other;
 
-        return (this.num == otherEvent.num
+        return (this.dateLogged.equals(otherEvent.dateLogged)
                 && this.description.equals(otherEvent.description));
     }
 
     @Override
     public int hashCode() {
-        return (HASH_CONSTANT + description.hashCode());
+        return (HASH_CONSTANT * dateLogged.hashCode() + description.hashCode());
     }
 
     @Override
     public String toString() {
-        int prevNum = num;
-        num++;
-        return prevNum + ": " + description;
+        return dateLogged.toString() + "\n" + description;
     }
 }

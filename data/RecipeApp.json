@@ -7,16 +7,10 @@
             "steps": "1. Fry chopped leeks and potatoes. Do not brown. 2. Add in broth to just fill chopped veggies. 3. When veggies are tender, blend or mash, then add heavy cream"
         },
         {
-            "name": "recipe 2",
-            "ingredients": "",
-            "category": "a",
-            "steps": ""
-        },
-        {
-            "name": "2222222",
-            "ingredients": "d",
-            "category": "d",
-            "steps": "d"
+            "name": "Minestrone Soup",
+            "ingredients": "Veggies",
+            "category": "Soup",
+            "steps": "1. Add chopped veggies to boiling water. 2. When veggies are soft, serve"
         }
     ],
     "name": "Recipe Lists",
@@ -40,22 +34,10 @@
             "steps": "1. Fry chopped leeks and potatoes. Do not brown. 2. Add in broth to just fill chopped veggies. 3. When veggies are tender, blend or mash, then add heavy cream"
         },
         {
-            "name": "Smoked Paprika Curry Sauce",
-            "ingredients": "Butter, Onions, Paprika, Tomato Paste, Heavy Cream",
-            "category": "Sauce",
-            "steps": "1. Combine chopped with melted butter in a pot. Fry onions until they're soft 2.Add in water, let it boil and reduce to half. 3. Turn off heat and add in tomato paste.4. Add in heavy cream and heat it up to temperature. Mix well."
-        },
-        {
-            "name": "2222222",
-            "ingredients": "d",
-            "category": "d",
-            "steps": "d"
-        },
-        {
-            "name": "2222222",
-            "ingredients": "d",
-            "category": "d",
-            "steps": "d"
+            "name": "Tobs",
+            "ingredients": "One Tob",
+            "category": "Tobs",
+            "steps": "1. Tobs is life."
         }
     ]
 }

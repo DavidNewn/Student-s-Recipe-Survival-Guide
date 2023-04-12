@@ -44,31 +44,6 @@ Note, there is currently a bug in loading as I have not fully implemented saving
 where the default recipes will no longer display their associated images from the map but instead Tobs. 
 Regardless, the program should still keep running.
 
-
-### Phase 4: Task 3
-If I had more time, I would:
-
-- Implement an appropriate design pattern such as the Composite pattern to improve interacting with adding, removing, 
-and editing recipes in the recipe lists, as well as to improve cohesion and reduce coupling.
-- Or perhaps also implement the Iterator pattern to iterate through my recipe lists, abstracting code relating to 
-interacting with a recipe in a list, as well as improving cohesion and reducing coupling
-- Refactor my recipe class so that the ingredients and steps fields better handle longer text, as recipes often have. 
-One option might include declaring them as a collection of string such as an arraylist.
-- Refactor my RecipeMainFrame class (the GUI app); maybe implement the Observer pattern, having panels update 
-based on changes received from a subject.
-- Remove the association of RecipeLists with the RecipeApp (console-based recipe app) to be like my GUI where it only
-creates the RecipeLists object when saving and loading from file. No reason for it to be a field, and changing it to
-be declared locally 'hides' it from outside the saving and loading methods.
-
-Other than refactoring, I would like to implement my intended feature where deleting a recipe from the main list 
-removes that recipe from the favourite list if it's present. 
-
-Furthermore, I would like to properly implement an image adding and saving feature where a user can add their own images
-from a file chooser, and then have that chosen image saved to that recipe via a map. To do so I will need to also
-save the map into a JSON file, which required time that I currently do not have. So for now there's a bug in the app
-where upon loading the previous app state the images for the default recipes will no longer properly show.
-
-
 ***
 
 ## Information:
@@ -128,3 +103,100 @@ will not penalize students for not following these criteria exactly.
 - consider weights and amount of food items
   - reasonable units depending on the food item: ml or l for liquids, # of garlic cloves
   - then also allow users to edit theses to their liking. Conversion from metric to imperial units, etc.
+
+### Phase 4: Task 2
+**Event Log Sample:**
+
+Tue Apr 11 20:49:35 PDT 2023
+Created a New Recipe: Pasta Alla Norcina
+Tue Apr 11 20:49:35 PDT 2023
+Created a New Recipe: Minestrone Soup
+Tue Apr 11 20:49:35 PDT 2023
+Created a New Recipe: Vichyssoise
+Tue Apr 11 20:49:35 PDT 2023
+Created a New Recipe: Fried Rice
+Tue Apr 11 20:49:35 PDT 2023
+Created a New Recipe: Smoked Paprika Curry Sauce
+Tue Apr 11 20:49:35 PDT 2023
+Added "Pasta Alla Norcina" into the main list!
+Tue Apr 11 20:49:35 PDT 2023
+Added "Minestrone Soup" into the main list!
+Tue Apr 11 20:49:35 PDT 2023
+Added "Vichyssoise" into the main list!
+Tue Apr 11 20:49:35 PDT 2023
+Added "Fried Rice" into the main list!
+Tue Apr 11 20:49:35 PDT 2023
+Added "Smoked Paprika Curry Sauce" into the main list!
+Tue Apr 11 20:49:35 PDT 2023
+Added "Vichyssoise" into the favourite list!
+Tue Apr 11 20:49:35 PDT 2023
+Added "Fried Rice" into the favourite list!
+Tue Apr 11 20:50:12 PDT 2023
+Changed recipe name from "Smoked Paprika Curry Sauce" to "Tobs"
+Tue Apr 11 20:50:12 PDT 2023
+Changed category from "Sauce" to "Tobs"
+Tue Apr 11 20:50:12 PDT 2023
+Changed ingredients from "Butter, Onions, Paprika, Tomato Paste, Heavy Cream" to "One Tob"
+Tue Apr 11 20:50:12 PDT 2023
+Changed recipe steps for: Tobs
+Tue Apr 11 20:50:17 PDT 2023
+Removed "Fried Rice" from the main list!
+Tue Apr 11 20:50:22 PDT 2023
+Removed "Fried Rice" from the favourite list!
+Tue Apr 11 20:50:26 PDT 2023
+Added "Minestrone Soup" into the favourite list!
+Tue Apr 11 20:50:29 PDT 2023
+Saved recipe list to file!
+Tue Apr 11 20:50:31 PDT 2023
+Loaded recipe list from file!
+Tue Apr 11 20:50:31 PDT 2023
+Created a New Recipe: Pasta Alla Norcina
+Tue Apr 11 20:50:31 PDT 2023
+Added "Pasta Alla Norcina" into the main list!
+Tue Apr 11 20:50:31 PDT 2023
+Created a New Recipe: Minestrone Soup
+Tue Apr 11 20:50:31 PDT 2023
+Added "Minestrone Soup" into the main list!
+Tue Apr 11 20:50:31 PDT 2023
+Created a New Recipe: Vichyssoise
+Tue Apr 11 20:50:31 PDT 2023
+Added "Vichyssoise" into the main list!
+Tue Apr 11 20:50:31 PDT 2023
+Created a New Recipe: Tobs
+Tue Apr 11 20:50:31 PDT 2023
+Added "Tobs" into the main list!
+Tue Apr 11 20:50:31 PDT 2023
+Created a New Recipe: Vichyssoise
+Tue Apr 11 20:50:31 PDT 2023
+Added "Vichyssoise" into the favourite list!
+Tue Apr 11 20:50:31 PDT 2023
+Created a New Recipe: Minestrone Soup
+Tue Apr 11 20:50:31 PDT 2023
+Added "Minestrone Soup" into the favourite list!
+Tue Apr 11 20:50:36 PDT 2023
+Removed "Minestrone Soup" from the favourite list!
+
+Process finished with exit code 0
+
+### Phase 4: Task 3
+If I had more time, I would:
+
+- Implement an appropriate design pattern such as the Composite pattern to improve interacting with adding, removing,
+  and editing recipes in the recipe lists, as well as to improve cohesion and reduce coupling.
+- Or perhaps also implement the Iterator pattern to iterate through my recipe lists, abstracting code relating to
+  interacting with a recipe in a list, as well as improving cohesion and reducing coupling
+- Refactor my recipe class so that the ingredients and steps fields better handle longer text, as recipes often have.
+  One option might include declaring them as a collection of string such as an arraylist.
+- Refactor my RecipeMainFrame class (the GUI app); maybe implement the Observer pattern, having panels update
+  based on changes received from a subject.
+- Remove the association of RecipeLists with the RecipeApp (console-based recipe app) to be like my GUI where it only
+  creates the RecipeLists object when saving and loading from file. No reason for it to be a field, and changing it to
+  be declared locally 'hides' it from outside the saving and loading methods.
+
+Other than refactoring, I would like to implement my intended feature where deleting a recipe from the main list
+removes that recipe from the favourite list if it's present.
+
+Furthermore, I would like to properly implement an image adding and saving feature where a user can add their own images
+from a file chooser, and then have that chosen image saved to that recipe via a map. To do so I will need to also
+save the map into a JSON file, which required time that I currently do not have. So for now there's a bug in the app
+where upon loading the previous app state the images for the default recipes will no longer properly show.

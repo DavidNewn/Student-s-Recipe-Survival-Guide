@@ -3,6 +3,9 @@ package model;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.Calendar;
+import java.util.Date;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
@@ -10,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  */
 public class EventTest {
 	private Event e;
-	private int seq = 1;
+	private Date d;
     private Recipe newRecipe = new Recipe("A New Recipe", "Whatever category", "No ing",
             "1. Cook");
 	
@@ -21,23 +24,26 @@ public class EventTest {
 	@BeforeEach
 	public void runBefore() {
 		e = new Event("New Recipe Added: " + newRecipe.getRecipeName());   // (1)
-		seq = 1;   // (2)
+		d = Calendar.getInstance().getTime();   // (2)
 	}
 
     // Add recipe
 	@Test
-	public void testEvent() {
+	public void testAddEvent() {
         assertEquals("A New Recipe", newRecipe.getRecipeName());
         assertEquals("Whatever category", newRecipe.getCategory());
         assertEquals("No ing", newRecipe.getIngredients());
         assertEquals("1. Cook", newRecipe.getSteps());
 
 		assertEquals("New Recipe Added: A New Recipe", e.getDescription());
-		assertEquals(seq, 1);
+		assertEquals(d, e.getDate());
 	}
+
+
+    // !!! Make a test for hashCode and equals from Event class
 
 	@Test
 	public void testToString() {
-		assertEquals(seq + ": " + "New Recipe Added: A New Recipe", e.toString());
+		assertEquals(d.toString() + "\n" + "New Recipe Added: A New Recipe", e.toString());
 	}
 }

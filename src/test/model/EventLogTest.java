@@ -19,9 +19,9 @@ public class EventLogTest {
 	
 	@BeforeEach
 	public void loadEvents() {
-		e1 = new Event("A1");
-		e2 = new Event("A2");
-		e3 = new Event("A3");
+		e1 = new Event("Added R1 to the main list!");
+		e2 = new Event("Added R2 to the favorite list");
+		e3 = new Event("Removed R3 from the main list");
 		EventLog el = EventLog.getInstance();
 		el.logEvent(e1);
 		el.logEvent(e2);
