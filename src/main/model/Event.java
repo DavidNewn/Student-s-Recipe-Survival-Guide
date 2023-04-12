@@ -61,6 +61,6 @@ public class Event {
     public String toString() {
         int prevNum = num;
         num++;
-        return prevNum + ":" + description;
+        return prevNum + ": " + description;
     }
 }

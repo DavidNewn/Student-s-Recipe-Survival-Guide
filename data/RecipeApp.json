@@ -7,16 +7,16 @@
             "steps": "1. Fry chopped leeks and potatoes. Do not brown. 2. Add in broth to just fill chopped veggies. 3. When veggies are tender, blend or mash, then add heavy cream"
         },
         {
-            "name": "Fried Rice",
-            "ingredients": "Rice, Leftover Veggies or Meats",
-            "category": "Rice",
-            "steps": "1. Add rice in a pan with some oil. Fry for a bit. 2. Add in leftovers. 3. Serve hot"
-        },
-        {
             "name": "recipe 2",
             "ingredients": "",
             "category": "a",
             "steps": ""
+        },
+        {
+            "name": "2222222",
+            "ingredients": "d",
+            "category": "d",
+            "steps": "d"
         }
     ],
     "name": "Recipe Lists",
@@ -40,34 +40,22 @@
             "steps": "1. Fry chopped leeks and potatoes. Do not brown. 2. Add in broth to just fill chopped veggies. 3. When veggies are tender, blend or mash, then add heavy cream"
         },
         {
-            "name": "Fried Rice",
-            "ingredients": "Rice, Leftover Veggies or Meats",
-            "category": "Rice",
-            "steps": "1. Add rice in a pan with some oil. Fry for a bit. 2. Add in leftovers. 3. Serve hot"
-        },
-        {
             "name": "Smoked Paprika Curry Sauce",
             "ingredients": "Butter, Onions, Paprika, Tomato Paste, Heavy Cream",
             "category": "Sauce",
             "steps": "1. Combine chopped with melted butter in a pot. Fry onions until they're soft 2.Add in water, let it boil and reduce to half. 3. Turn off heat and add in tomato paste.4. Add in heavy cream and heat it up to temperature. Mix well."
         },
         {
-            "name": "recipe 1",
-            "ingredients": "",
-            "category": "a",
-            "steps": ""
+            "name": "2222222",
+            "ingredients": "d",
+            "category": "d",
+            "steps": "d"
         },
         {
-            "name": "recipe 2",
-            "ingredients": "",
-            "category": "a",
-            "steps": ""
-        },
-        {
-            "name": "mmv",
-            "ingredients": "vvvmb",
-            "category": "mvmvm",
-            "steps": "aADA"
+            "name": "2222222",
+            "ingredients": "d",
+            "category": "d",
+            "steps": "d"
         }
     ]
 }

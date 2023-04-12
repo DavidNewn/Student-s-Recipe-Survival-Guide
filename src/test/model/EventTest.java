@@ -38,6 +38,6 @@ public class EventTest {
 
 	@Test
 	public void testToString() {
-		assertEquals(seq + ":" + "New Recipe Added: A New Recipe", e.toString());
+		assertEquals(seq + ": " + "New Recipe Added: A New Recipe", e.toString());
 	}
 }

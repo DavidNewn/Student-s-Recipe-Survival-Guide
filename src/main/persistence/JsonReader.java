@@ -1,9 +1,6 @@
 package persistence;
 
-import model.Recipe;
-import model.RecipeList;
-import model.RecipeListFav;
-import model.RecipeLists;
+import model.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -19,6 +16,7 @@ import java.util.stream.Stream;
  */
 public class JsonReader {
     private String source;
+    private EventLog log = EventLog.getInstance();
 
     // EFFECTS: constructs reader to read JSON data, with key from RecipeLists
     public JsonReader(String source) {
@@ -30,6 +28,8 @@ public class JsonReader {
     public RecipeLists read(String keyRecipeLists, String keyRecipeMain, String keyRecipeFav) throws IOException {
         String jsonData = readFile(source);
         JSONObject jsonObject = new JSONObject(jsonData);
+
+        log.logEvent(new Event("Loaded recipe list from file!"));
         return parseRecipeList(jsonObject, keyRecipeLists, keyRecipeMain, keyRecipeFav);
     }
 
@@ -40,7 +40,6 @@ public class JsonReader {
         try (Stream<String> stream = Files.lines(Paths.get(source), StandardCharsets.UTF_8)) {
             stream.forEach(s -> contentBuilder.append(s));
         }
-
         return contentBuilder.toString();
     }
 
@@ -60,7 +59,7 @@ public class JsonReader {
     }
 
     // EFFECTS: parses each recipe corresponding to its key in the JSON data and adds the recipes into the recipe list
-    private void addRecipes(RecipeList rl, JSONObject jsonObject) {
+    private void addRecipes(RecipeListAbstract rl, JSONObject jsonObject) {
         String key = rl.getName();
         JSONArray jsonArray = jsonObject.getJSONArray(key);
         for (Object json : jsonArray) {
@@ -70,7 +69,7 @@ public class JsonReader {
     }
 
     // EFFECTS: parses the recipe's field from the JSON object data and returns the recipe
-    private void addRecipe(RecipeList rl, JSONObject jsonObject) {
+    private void addRecipe(RecipeListAbstract rl, JSONObject jsonObject) {
         String name = jsonObject.getString("name");
         String category = jsonObject.getString("category");
         String ingredients = jsonObject.getString("ingredients");

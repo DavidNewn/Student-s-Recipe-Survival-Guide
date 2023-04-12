@@ -44,16 +44,27 @@ Note, there is currently a bug in loading as I have not fully implemented saving
 where the default recipes will no longer display their associated images from the map but instead Tobs. 
 Regardless, the program should still keep running.
 
+
 ### Phase 4: Task 3
 If I had more time, I would:
 
-- Create an abstract class or interface describing the general behaviour of recipe lists, so that it'll be easier 
-to add other kinds of recipe lists such as a specific category of food and other things.
-- Implemented an appropriate design pattern such as the Composite pattern to improve interacting with recipes and the
-recipe lists, as well as to improve cohesion and reduce coupling.
+- Implement an appropriate design pattern such as the Composite pattern to improve interacting with adding, removing, 
+and editing recipes in the recipe lists, as well as to improve cohesion and reduce coupling.
+- Or perhaps also implement the Iterator pattern to iterate through my recipe lists, abstracting code relating to 
+interacting with a recipe in a list, as well as improving cohesion and reducing coupling
+- Refactor my recipe class so that the ingredients and steps fields better handle longer text, as recipes often have. 
+One option might include declaring them as a collection of string such as an arraylist.
+- Refactor my RecipeMainFrame class (the GUI app); maybe implement the Observer pattern, having panels update 
+based on changes received from a subject.
+- Remove the association of RecipeLists with the RecipeApp (console-based recipe app) to be like my GUI where it only
+creates the RecipeLists object when saving and loading from file. No reason for it to be a field, and changing it to
+be declared locally 'hides' it from outside the saving and loading methods.
 
-Also, I would like to properly implement an image adding and saving feature where a user can add their own images from 
-a file chooser, and then have that chosen image saved to that recipe via a map. To do so I will need to also
+Other than refactoring, I would like to implement my intended feature where deleting a recipe from the main list 
+removes that recipe from the favourite list if it's present. 
+
+Furthermore, I would like to properly implement an image adding and saving feature where a user can add their own images
+from a file chooser, and then have that chosen image saved to that recipe via a map. To do so I will need to also
 save the map into a JSON file, which required time that I currently do not have. So for now there's a bug in the app
 where upon loading the previous app state the images for the default recipes will no longer properly show.
 

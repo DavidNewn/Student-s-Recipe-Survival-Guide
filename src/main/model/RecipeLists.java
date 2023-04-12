@@ -30,7 +30,7 @@ public class RecipeLists implements Writable {
     }
 
     // EFFECTS: returns recipes in a list as a JSON array
-    private JSONArray recipesToJson(RecipeList recipeList) {
+    private JSONArray recipesToJson(RecipeListAbstract recipeList) {
         JSONArray jsonArray = new JSONArray();
 
         for (int i = 0;i < recipeList.size();i++) {

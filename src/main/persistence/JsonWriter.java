@@ -1,8 +1,6 @@
 package persistence;
 
-import model.RecipeList;
-import model.RecipeListFav;
-import model.RecipeLists;
+import model.*;
 import org.json.JSONObject;
 
 import java.io.*;
@@ -14,6 +12,7 @@ public class JsonWriter {
     private static final int TAB = 4;
     private PrintWriter writer;
     private String destination;
+    private EventLog log = EventLog.getInstance();
 
     // EFFECTS: constructs writer to write to destination file
     public JsonWriter(String destination) {
@@ -45,5 +44,6 @@ public class JsonWriter {
     // EFFECTS: writes string to file
     private void saveToFile(String json) {
         writer.print(json);
+        log.logEvent(new Event("Saved recipe list to file!"));
     }
 }

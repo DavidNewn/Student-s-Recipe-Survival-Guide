@@ -70,7 +70,7 @@ public class RecipeApp {
                 displayMenuQuitPrompt();
                 command = readCommand();
                 if (command.equals("y")) {
-                    run = false;
+                    System.exit(0);
                 }
                 System.out.println("Cancelled quit prompt");
             } else {

@@ -477,8 +477,6 @@ public class RecipeMainFrame extends JFrame implements ActionListener {
         try {
             recipeLists = jsonReader.read(keyRecipeLists, keyRecipeListMain, keyRecipeListFav);
             // !!! load separate json file representing images
-
-            System.out.println(recipeSelected);
             recipeList = recipeLists.getRecipeList();
             recipeListFav = recipeLists.getRecipeListFav();
 
@@ -834,7 +832,6 @@ public class RecipeMainFrame extends JFrame implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             if (state == 0) {
-                System.out.println(modelMain);
                 modelMain.removeAllElements();
                 favList();
                 favButtonPanels();

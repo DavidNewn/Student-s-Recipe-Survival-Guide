@@ -4,7 +4,7 @@ import org.json.JSONObject;
 import persistence.Writable;
 
 /**
- * The Recipe class, representing a recipe with a name, category, ingredients, and steps.
+ * The recipe class, representing a recipe with a name, category, ingredients, and steps.
  */
 
 // TODO:
@@ -24,7 +24,7 @@ public class Recipe implements Writable {
         this.category = category;
         this.ingredients = ingredients;
         this.steps = steps;
-        log.logEvent(new Event("Created a New Recipe: " + name)); // First logs 5 default recipes
+        log.logEvent(new Event("Created a New Recipe: " + name));
     }
 
     // MODIFIES: this, log
